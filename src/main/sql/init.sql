@@ -4,7 +4,7 @@ CREATE DATABASE Core;
 USE Core;
 
 
--- user related
+-- user
 CREATE TABLE User (
     username VARCHAR(255) PRIMARY KEY,
     email VARCHAR(255),
@@ -33,15 +33,16 @@ CREATE TABLE Reservation (
     id INT PRIMARY KEY AUTO_INCREMENT,
     datetime DATETIME,
     user VARCHAR(255) UNIQUE,
-    room VARCHAR(255),
+    room VARCHAR(255) UNIQUE,
     seats INT,
     res_status ENUM('pending', 'success', 'cancelled'),
+    details VARCHAR(255),
     FOREIGN KEY (user) REFERENCES User(user_id),
     FOREIGN KEY (room) REFERENCES Room(room_id),
 );
 
 
--- TODO: exam reservation
+-- course related
 CREATE TABLE Course (
     course_code VARCHAR(255) PRIMARY KEY,
     course_name VARCHAR(255),
