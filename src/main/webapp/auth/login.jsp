@@ -1,11 +1,11 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <title>Title</title>
 </head>
 <body>
 
-<a href="/signup">Signup</a>
+<a href="${pageContext.request.contextPath}/signup">Signup</a>
 
 </body>
 </html>
