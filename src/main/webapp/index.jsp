@@ -36,7 +36,7 @@
                     <hr>
                     <div class="roomdesc">
                         <%-- fix this shit, how to add packages --%>
-                        <jsp:useBean id="myAuthor" class="" scope="request" />
+                       
                         <p>something</p>
                     </div>
                     <div class="roomdesc">
