@@ -1,0 +1,60 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Jun 3, 2023, 2:26:08 AM
+    Author     : Omar Alomory(S63955)
+*/
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+.containerBody{
+    width: 100%;
+    max-height: max-content;
+    background-color: lightgray;
+
+}
+
+.main-header{
+    display: flex;
+    width: 80%;
+    margin: auto;
+
+}
+/* left styling */
+.main-side-left, .main-side-right{
+    width: 30%;
+    background-color: white;
+    padding: 20px;
+    border-radius: 20px;
+    margin: 10px 5px 10px 0;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    text-align: center;
+    min-height: 80vh;
+}
+.main-side-left > p, .main-side-right > p{
+    font-size: 1.5rem;
+    font-weight: bolder;
+
+    margin-bottom: 1rem;
+}
+.subcode, .roomdesc{
+     background-color: #e3e3e3;
+    padding: 15px;
+    border-radius: 20px;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+.subcode >p, .roomdesc >p{
+   margin:0;
+}
+/* right styling */
+.main-side-right{
+    width: 70%;
+}
+

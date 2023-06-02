@@ -10,8 +10,7 @@ CREATE TABLE User (
     email VARCHAR(255),
     name VARCHAR(255),
     phone_number VARCHAR(255),
-    type INT,
-    CHECK (type = 1 OR type = 2 OR type = 3)
+    type INT CHECK (type = 1 OR type = 2 OR type = 3)  
 );
 
 
@@ -37,8 +36,8 @@ CREATE TABLE Reservation (
     seats INT,
     res_status ENUM('pending', 'success', 'cancelled'),
     details VARCHAR(255),
-    FOREIGN KEY (user) REFERENCES User(user_id),
-    FOREIGN KEY (room) REFERENCES Room(room_id),
+    FOREIGN KEY (user) REFERENCES User(username),-- i changed it from user_id to username to match the fields
+    FOREIGN KEY (room) REFERENCES Room(room_id) --  i deleted the comma here
 );
 
 
