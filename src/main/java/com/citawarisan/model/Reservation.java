@@ -2,12 +2,9 @@ package com.citawarisan.model;
 
 import java.time.LocalDateTime;
 
-/**
- * @author Omar Alomory(S63955)
- */
 public class Reservation {
     private int id;
-    private LocalDateTime datetime;
+    private LocalDateTime startDateTime, endDateTime;
     private String user;
     private String room;
     private int seats;
@@ -22,12 +19,20 @@ public class Reservation {
         this.id = id;
     }
 
-    public LocalDateTime getDatetime() {
-        return datetime;
+    public LocalDateTime getStartDateTime() {
+        return startDateTime;
     }
 
-    public void setDatetime(LocalDateTime datetime) {
-        this.datetime = datetime;
+    public void setStartDateTime(LocalDateTime startDateTime) {
+        this.startDateTime = startDateTime;
+    }
+
+    public LocalDateTime getEndDateTime() {
+        return endDateTime;
+    }
+
+    public void setEndDateTime(LocalDateTime endDateTime) {
+        this.endDateTime = endDateTime;
     }
 
     public String getUser() {
