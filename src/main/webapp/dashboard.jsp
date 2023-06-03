@@ -1,22 +1,18 @@
-<%-- 
-    Document   : index.jsp
-    Created on : Jun 2, 2023, 4:22:40 AM
-    Author     : Omar Alomory(S63955)
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-<%@page language="java" %>
 
 <!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Home</title>
-    <link rel="stylesheet" href="./css/styles.css"/>
+    <link rel="stylesheet" href="styles/main.css"/>
 </head>
+
 <body>
+
 <%-- this will include the header with the css  --%>
 <%@include file="comp/nav.jsp" %>
+
 <div class="containerBody">
     <div class="main-header">
         <div class="main-side-left">
@@ -47,5 +43,4 @@
 </div>
 
 </body>
-
 </html>
