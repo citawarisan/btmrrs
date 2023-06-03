@@ -8,7 +8,7 @@ public class Reservation {
     private String user;
     private String room;
     private int seats;
-    private String resStatus;
+    private String status;
     private String details;
 
     public int getId() {
@@ -59,12 +59,12 @@ public class Reservation {
         this.seats = seats;
     }
 
-    public String getResStatus() {
-        return resStatus;
+    public String getStatus() {
+        return status;
     }
 
-    public void setResStatus(String resStatus) {
-        this.resStatus = resStatus;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getDetails() {
