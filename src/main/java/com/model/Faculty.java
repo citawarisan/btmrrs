@@ -1,7 +1,6 @@
-
 package com.model;
+
 /**
- *
  * @author Omar Alomory(S63955)
  */
 public class Faculty {

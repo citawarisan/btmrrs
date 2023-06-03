@@ -1,14 +1,12 @@
-
 package com.model;
 
 import java.time.LocalDateTime;
 
 /**
- *
  * @author Omar Alomory(S63955)
  */
 public class Reservation {
-     private int id;
+    private int id;
     private LocalDateTime datetime;
     private String user;
     private String room;
