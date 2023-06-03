@@ -1,4 +1,4 @@
-package com.citawarisan.btmrrs;
+package com.citawarisan.servlet;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

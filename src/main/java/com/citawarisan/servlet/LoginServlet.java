@@ -1,6 +1,6 @@
-package com.citawarisan.btmrrs;
+package com.citawarisan.servlet;
 
-import com.model.User;
+import com.citawarisan.model.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

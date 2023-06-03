@@ -1,22 +1,8 @@
-package com.model;
+package com.citawarisan.model;
 
-public class User extends Generic {
+public class User {
     private String username, password, name, phone, email;
     private int type;
-
-    public User() {
-        super("User", new String[]{}); // not sure whether to do column check or not
-    }
-
-    public User(String username, String password, String name, String phone, String email, int type) {
-        this();
-        setUsername(username);
-        setPassword(password);
-        setName(name);
-        setPhone(phone);
-        setEmail(email);
-        setType(type);
-    }
 
     public String getUsername() {
         return username;

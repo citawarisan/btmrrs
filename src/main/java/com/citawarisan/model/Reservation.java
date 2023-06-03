@@ -1,4 +1,4 @@
-package com.model;
+package com.citawarisan.model;
 
 import java.time.LocalDateTime;
 

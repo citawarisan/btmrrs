@@ -1,4 +1,4 @@
-package com.model;
+package com.citawarisan.model;
 
 /**
  * @author Omar Alomory(S63955)

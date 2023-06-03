@@ -1,13 +1,8 @@
-/**
- * @author Omar Alomory(S63955)
- */
+package com.citawarisan.dao;
 
-package com.dao;
-
-
-import com.model.Reservation;
-import com.model.User;
-import com.util.DBConnection;
+import com.citawarisan.model.Reservation;
+import com.citawarisan.model.User;
+import com.citawarisan.util.DBConnection;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -15,15 +10,11 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author Omar Alomory(S63955)
- */
-public class ReserveDao {
+public class ReservationDao {
 
     private final Connection connection;
 
-    public ReserveDao() throws ClassNotFoundException {
+    public ReservationDao() throws ClassNotFoundException {
         connection = DBConnection.getConnection();
     }
 
@@ -44,8 +35,7 @@ public class ReserveDao {
 
     public void deleteUser(String userid) {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement
-                    ("DELETE FROM users WHERE userid= ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM users WHERE userid= ?");
             preparedStatement.setString(1, userid);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -55,8 +45,7 @@ public class ReserveDao {
 
     public void updtateUser(User user) {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement
-                    ("UPDATE users SET firstname = ?, lastname = ?  WHERE userid = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE users SET firstname = ?, lastname = ?  WHERE userid = ?");
 //            preparedStatement.setString(1, user.getFirstname());
 //            preparedStatement.setString(2, user.getLastname());
 //            preparedStatement.setString(3, user.getUserid());
@@ -69,8 +58,7 @@ public class ReserveDao {
     public List<Reservation> displayReservation() {
         List<Reservation> reservationList = new ArrayList<>();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement
-                    ("SELECT * FROM reservation");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM reservation");
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 Reservation resTemp = new Reservation();
@@ -97,8 +85,7 @@ public class ReserveDao {
     public User getUserById(String id) {
         User user = new User();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement
-                    ("SELECT * FROM users WHERE userid = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE userid = ?");
             preparedStatement.setString(1, id);
 
             ResultSet rs = preparedStatement.executeQuery();
