@@ -13,10 +13,11 @@ BTMRRS;
 CREATE TABLE User
 (
     user         VARCHAR(255) PRIMARY KEY,
-    email        VARCHAR(255),
+    password     VARCHAR(255),
+    type         INT,
     name         VARCHAR(255),
-    phone_number VARCHAR(255),
-    type         INT CHECK (type = 1 OR type = 2 OR type = 3)
+    email        VARCHAR(255),
+    phone_number VARCHAR(255)
 );
 
 
