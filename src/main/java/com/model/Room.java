@@ -1,12 +1,10 @@
-
 package com.model;
 
 /**
- *
  * @author Omar Alomory(S63955)
  */
 public class Room {
-     private String roomId;
+    private String roomId;
     private String roomName;
     private int roomSize;
     private int faculty;

@@ -5,7 +5,6 @@ package com.model;
  */
 
 /**
- *
  * @author Omar Alomory(S63955)
  */
 public class Course {
@@ -54,6 +53,6 @@ public class Course {
     public void setExamHours(int examHours) {
         this.examHours = examHours;
     }
-    
-    
+
+
 }
