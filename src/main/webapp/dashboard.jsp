@@ -16,7 +16,7 @@
 </head>
 <body>
 <%-- this will include the header with the css  --%>
-<%@include file="header.jsp" %>
+<%@include file="comp/nav.jsp" %>
 <div class="containerBody">
     <div class="main-header">
         <div class="main-side-left">

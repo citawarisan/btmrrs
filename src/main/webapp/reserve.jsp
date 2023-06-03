@@ -13,7 +13,7 @@
 </head>
 <body>
 <%-- this will include the header with the css  --%>
-<%@include file="header.jsp" %>
+<%@include file="comp/nav.jsp" %>
 
 </body>
 </html>
