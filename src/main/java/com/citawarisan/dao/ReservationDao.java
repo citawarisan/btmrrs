@@ -1,105 +1,115 @@
 package com.citawarisan.dao;
 
 import com.citawarisan.model.Reservation;
-import com.citawarisan.model.User;
-import com.citawarisan.util.DBConnection;
 
 import java.sql.*;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReservationDao {
+public class ReservationDao extends ModelDao<Reservation> {
+    private static List<Reservation> parseReservations(ResultSet rs) throws SQLException {
+        List<Reservation> reservations = new ArrayList<>();
 
-    private final Connection connection;
+        while (rs.next()) {
+            Reservation reservation = new Reservation();
+            reservation.setId(rs.getInt("id"));
+            reservation.setUser(rs.getString("user"));
+            reservation.setStartDateTime(rs.getTimestamp("start_datetime").toLocalDateTime());
+            reservation.setEndDateTime(rs.getTimestamp("end_datetime").toLocalDateTime());
+            reservation.setRoom(rs.getString("room"));
+            reservation.setSeats(rs.getInt("seats"));
+            reservation.setStatus(rs.getString("status"));
+            reservation.setDetails(rs.getString("details"));
+            reservations.add(reservation);
+        }
 
-    public ReservationDao() throws ClassNotFoundException {
-        connection = DBConnection.getConnection();
+        return reservations;
     }
 
-    public void displayReservation(Reservation user) {
+    public PreparedStatement parseQuery(String query, Reservation reservation) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement(query);
+        ps.setString(1, reservation.getUser());
+        ps.setString(2, reservation.getRoom());
+        ps.setInt(3, reservation.getSeats());
+        ps.setTimestamp(4, Timestamp.valueOf(reservation.getStartDateTime()));
+        ps.setTimestamp(5, Timestamp.valueOf(reservation.getEndDateTime()));
+        ps.setString(6, reservation.getDetails());
+        ps.setString(7, reservation.getStatus());
+        return ps;
+    }
+
+    public boolean create(Reservation reservation) {
         try {
-            String insertion = "INSERT INTO users(userid, firstname, lastname) VALUES (?,?,?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(insertion);
+            String query = "INSERT INTO Reservation VALUE (?, ?, ?, ?, ?, ?, ?)";
+            parseQuery(query, reservation).execute();
 
-//            preparedStatement.setString(1, user.getUserid());
-//            preparedStatement.setString(2, user.getFirstname());
-//            preparedStatement.setString(3, user.getLastname());
-
-            preparedStatement.executeUpdate();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return false;
     }
 
-    public void deleteUser(String userid) {
+    public List<Reservation> read() {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM users WHERE userid= ?");
-            preparedStatement.setString(1, userid);
-            preparedStatement.executeUpdate();
+            String query = "SELECT * FROM Reservation";
+            ResultSet rs = connection.createStatement().executeQuery(query);
+
+            return parseReservations(rs);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return null;
     }
 
-    public void updtateUser(User user) {
+    // select by username
+    public List<Reservation> read(String username) {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE users SET firstname = ?, lastname = ?  WHERE userid = ?");
-//            preparedStatement.setString(1, user.getFirstname());
-//            preparedStatement.setString(2, user.getLastname());
-//            preparedStatement.setString(3, user.getUserid());
-            preparedStatement.executeUpdate();
+            String query = "SELECT * FROM Reservation WHERE user = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, username);
+
+            ResultSet rs = ps.executeQuery();
+
+            return parseReservations(rs);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return null;
     }
 
-    public List<Reservation> displayReservation() {
-        List<Reservation> reservationList = new ArrayList<>();
+    public boolean update(Reservation reservation) {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM reservation");
-            ResultSet rs = preparedStatement.executeQuery();
-            while (rs.next()) {
-                Reservation resTemp = new Reservation();
-                resTemp.setId(rs.getInt(1));
-                Timestamp ts = rs.getTimestamp(2);
+            String query = "UPDATE Reservation " + "SET user = ?, room = ?, seats = ?, start_datetime = ?, end_datetime = ?, " + "details = ?, status = ? WHERE id = ?";
+            PreparedStatement ps = parseQuery(query, reservation);
+            ps.setInt(8, reservation.getId());
+            ps.executeUpdate();
 
-                Date date = new Date(ts.getTime());
-                LocalDateTime localDateTime = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-                resTemp.setDatetime(localDateTime);
-
-                resTemp.setUser(rs.getString(3));
-                resTemp.setRoom(rs.getString(4));
-                resTemp.setSeats(rs.getInt(5));
-                resTemp.setResStatus(rs.getString(6));
-                resTemp.setDetails(rs.getString(7));
-                reservationList.add(resTemp);
-            }
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return reservationList;
+
+        return false;
     }
 
-    public User getUserById(String id) {
-        User user = new User();
+    public boolean delete(Reservation reservation) {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE userid = ?");
-            preparedStatement.setString(1, id);
+            String query = "DELETE FROM Reservation WHERE user = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, reservation.getUser());
+            ps.execute();
 
-            ResultSet rs = preparedStatement.executeQuery();
-
-            while (rs.next()) {
-//                user.setUserid(rs.getString("userid"));
-//                user.setFirstname(rs.getString("firstname"));
-//                user.setLastname(rs.getString("lastname"));
-            }
-
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return user;
+
+        return false;
     }
+
 }
 
