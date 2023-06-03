@@ -1,10 +1,12 @@
+-- cleanup your mess
 DROP
-DATABASE IF EXISTS Core; -- cleanup your mess
+DATABASE IF EXISTS BTMRRS;
 
 CREATE
-DATABASE Core;
+DATABASE BTMRRS;
+
 USE
-Core;
+BTMRRS;
 
 
 -- user
