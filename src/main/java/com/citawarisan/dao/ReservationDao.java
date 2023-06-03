@@ -1,13 +1,17 @@
 package com.citawarisan.dao;
 
 import com.citawarisan.model.Reservation;
+import com.citawarisan.model.User;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ReservationDao extends ModelDao<Reservation> {
-    private static List<Reservation> parseReservations(ResultSet rs) throws SQLException {
+    protected List<Reservation> parseModels(ResultSet rs) throws SQLException {
         List<Reservation> reservations = new ArrayList<>();
 
         while (rs.next()) {
@@ -26,7 +30,7 @@ public class ReservationDao extends ModelDao<Reservation> {
         return reservations;
     }
 
-    public PreparedStatement parseQuery(String query, Reservation reservation) throws SQLException {
+    protected PreparedStatement parseQuery(String query, Reservation reservation) throws SQLException {
         PreparedStatement ps = connection.prepareStatement(query);
         ps.setString(1, reservation.getUser());
         ps.setString(2, reservation.getRoom());
@@ -56,7 +60,7 @@ public class ReservationDao extends ModelDao<Reservation> {
             String query = "SELECT * FROM Reservation";
             ResultSet rs = connection.createStatement().executeQuery(query);
 
-            return parseReservations(rs);
+            return parseModels(rs);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -65,15 +69,15 @@ public class ReservationDao extends ModelDao<Reservation> {
     }
 
     // select by username
-    public List<Reservation> read(String username) {
+    public List<Reservation> read(User user) {
         try {
             String query = "SELECT * FROM Reservation WHERE user = ?";
             PreparedStatement ps = connection.prepareStatement(query);
-            ps.setString(1, username);
+            ps.setString(1, user.getUsername());
 
             ResultSet rs = ps.executeQuery();
 
-            return parseReservations(rs);
+            return parseModels(rs);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -83,7 +87,7 @@ public class ReservationDao extends ModelDao<Reservation> {
 
     public boolean update(Reservation reservation) {
         try {
-            String query = "UPDATE Reservation " + "SET user = ?, room = ?, seats = ?, start_datetime = ?, end_datetime = ?, " + "details = ?, status = ? WHERE id = ?";
+            String query = "UPDATE Reservation SET user = ?, room = ?, seats = ?, start_datetime = ?, end_datetime = ?, details = ?, status = ? WHERE id = ?";
             PreparedStatement ps = parseQuery(query, reservation);
             ps.setInt(8, reservation.getId());
             ps.executeUpdate();
