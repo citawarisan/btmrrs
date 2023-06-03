@@ -1,16 +1,22 @@
 package com.model;
 
-
-/**
- *
- * @author Omar Alomory(S63955)
- */
-public class User {
-    private String username;
-    private String email;
-    private String name;
-    private String phoneNumber;
+public class User extends Generic {
+    private String username, password, name, phone, email;
     private int type;
+
+    public User() {
+        super("User", new String[]{}); // not sure whether to do column check or not
+    }
+
+    public User(String username, String password, String name, String phone, String email, int type) {
+        this();
+        setUsername(username);
+        setPassword(password);
+        setName(name);
+        setPhone(phone);
+        setEmail(email);
+        setType(type);
+    }
 
     public String getUsername() {
         return username;
@@ -20,12 +26,12 @@ public class User {
         this.username = username;
     }
 
-    public String getEmail() {
-        return email;
+    public String getPassword() {
+        return password;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getName() {
@@ -36,12 +42,20 @@ public class User {
         this.name = name;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public int getType() {
