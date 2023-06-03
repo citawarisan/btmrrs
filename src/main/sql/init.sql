@@ -10,7 +10,7 @@ Core;
 -- user
 CREATE TABLE User
 (
-    username     VARCHAR(255) PRIMARY KEY,
+    user         VARCHAR(255) PRIMARY KEY,
     email        VARCHAR(255),
     name         VARCHAR(255),
     phone_number VARCHAR(255),
@@ -19,12 +19,6 @@ CREATE TABLE User
 
 
 -- generic reservation
-CREATE TABLE Faculty
-(
-    faculty_id   INT PRIMARY KEY,
-    faculty_name VARCHAR(255)
-);
-
 CREATE TABLE Room
 (
     room_id   VARCHAR(255) PRIMARY KEY,
@@ -36,19 +30,26 @@ CREATE TABLE Room
 
 CREATE TABLE Reservation
 (
-    id         INT PRIMARY KEY AUTO_INCREMENT,
-    datetime   DATETIME,
-    user       VARCHAR(255) UNIQUE,
-    room       VARCHAR(255) UNIQUE,
-    seats      INT,
-    res_status ENUM('pending', 'success', 'cancelled'),
-    details    VARCHAR(255),
-    FOREIGN KEY (user) REFERENCES User (username),-- i changed it from user_id to username to match the fields
-    FOREIGN KEY (room) REFERENCES Room (room_id)  --  i deleted the comma here
+    id             INT PRIMARY KEY AUTO_INCREMENT,
+    start_datetime DATETIME,
+    end_datetime   DATETIME,
+    user           VARCHAR(255) UNIQUE,
+    room           VARCHAR(255) UNIQUE,
+    seats          INT,
+    res_status     ENUM('pending', 'success', 'cancelled'),
+    details        VARCHAR(255),
+    FOREIGN KEY (user) REFERENCES User (user),
+    FOREIGN KEY (room) REFERENCES Room (room_id)
 );
 
 
--- course related
+-- exam related
+CREATE TABLE Faculty
+(
+    faculty_id   INT PRIMARY KEY,
+    faculty_name VARCHAR(255)
+);
+
 CREATE TABLE Course
 (
     course_code        VARCHAR(255) PRIMARY KEY,
