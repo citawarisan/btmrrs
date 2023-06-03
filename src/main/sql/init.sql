@@ -33,13 +33,13 @@ CREATE TABLE Room
 CREATE TABLE Reservation
 (
     id             INT PRIMARY KEY AUTO_INCREMENT,
-    start_datetime DATETIME,
-    end_datetime   DATETIME,
     user           VARCHAR(255) UNIQUE,
     room           VARCHAR(255) UNIQUE,
     seats          INT,
-    res_status     ENUM('pending', 'success', 'cancelled'),
+    start_datetime DATETIME,
+    end_datetime   DATETIME,
     details        VARCHAR(255),
+    status         ENUM('pending', 'success', 'cancelled'),
     FOREIGN KEY (user) REFERENCES User (user),
     FOREIGN KEY (room) REFERENCES Room (room_id)
 );
