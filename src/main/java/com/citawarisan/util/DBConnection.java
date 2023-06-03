@@ -9,13 +9,13 @@ public class DBConnection {
     private static Connection connection = null;
     private static String user = "root", password = ""; // use setConnection() instead of changing this
 
-    public static Connection getConnection() throws ClassNotFoundException {
+    public static Connection getConnection() {
         if (connection != null) {
             return connection;
         } else try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(URL, "root", "admin");
-        } catch (SQLException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
         return connection;
