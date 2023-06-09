@@ -9,16 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDao extends ModelDao<User> {
+
     protected List<User> parseModels(ResultSet rs) throws SQLException {
         List<User> users = new ArrayList<>();
 
         while (rs.next()) {
             User user = new User();
             user.setUsername(rs.getString(1));
-            user.setName(rs.getString(2));
-            user.setPhone(rs.getString(3));
-            user.setEmail(rs.getString(4));
-            user.setPassword(rs.getString(5));
+            user.setPassword(rs.getString(2));
+            user.setName(rs.getString(3));
+            user.setPhone(rs.getString(4));
+            user.setEmail(rs.getString(5));
         }
 
         return users;
@@ -105,4 +106,3 @@ public class UserDao extends ModelDao<User> {
         return false;
     }
 }
-

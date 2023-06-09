@@ -10,13 +10,13 @@
 <h1>BTM Signup</h1>
 
 <form>
-    <input type="text" name="username" value="user" required/>
-    <input type="password" name="password" value="password" required/>
-    <input type="password" name="confirmPassword" value="password" required/>
-    <input type="text" name="name" value="someone" required/>
+    <input type="text" name="username" value="Username" required/>
+    <input type="password" name="password" value="" required/>
+    <input type="password" name="confirmPassword" value="" required/>
+    <input type="text" name="name" value="Name" required/>
     <input type="text" name="phone" value="0123456789" required/>
     <input type="email" name="email" value="someone@somewhere.com" required/>
-    <input type="submit" value="Login"/>
+    <input type="submit" value="Sign Up"/>
 </form>
 
 <a href="${pageContext.request.contextPath}/login">Login instead</a>
