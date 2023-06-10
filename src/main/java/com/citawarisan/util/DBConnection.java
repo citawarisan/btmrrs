@@ -17,7 +17,7 @@ public class DBConnection {
     
     private static Connection conn;
     
-    public static Connection getConnection() throws ClassNotFoundException{
+    public static Connection getConnection() {
         try {
             Class.forName(DRIVER_NAME);
             

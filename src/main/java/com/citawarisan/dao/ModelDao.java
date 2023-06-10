@@ -13,7 +13,7 @@ public abstract class ModelDao<T> {
 
     protected final Connection connection;
 
-    public ModelDao() throws ClassNotFoundException {
+    public ModelDao() {
         this.connection = DBConnection.getConnection();
     }
 
