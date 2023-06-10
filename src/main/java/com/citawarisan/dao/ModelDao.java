@@ -10,9 +10,10 @@ import java.sql.SQLException;
 import java.util.List;
 
 public abstract class ModelDao<T> {
+
     protected final Connection connection;
 
-    public ModelDao() {
+    public ModelDao() throws ClassNotFoundException {
         this.connection = DBConnection.getConnection();
     }
 
