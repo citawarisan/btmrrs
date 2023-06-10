@@ -14,8 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebServlet(name = "UserController", urlPatterns = {"/UserController"})
-public class UserControllerr extends HttpServlet {
+//since we have web.xml do we still need this annotation???
+//@WebServlet(name = "UserController", urlPatterns = {"/UserController"})
+public class UserController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException, ClassNotFoundException {
@@ -45,7 +46,7 @@ public class UserControllerr extends HttpServlet {
                     break;
             }
         } else {
-            response.sendRedirect(request.getContextPath() + "index.jsp");
+            response.sendRedirect(request.getContextPath() + "auth/login.jsp");
         }
 
     }
@@ -65,9 +66,9 @@ public class UserControllerr extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(UserControllerr.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(UserControllerr.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -85,9 +86,9 @@ public class UserControllerr extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(UserControllerr.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(UserControllerr.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
