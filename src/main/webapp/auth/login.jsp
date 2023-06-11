@@ -6,7 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Login Form</title>
         <style>
-               *{
+            *{
                 padding: 0;
                 margin: 0;
                 box-sizing: border-box;
@@ -18,7 +18,7 @@
                 background: url(https://mcdn.wallpapersafari.com/medium/31/28/9duO7g.jpg);
                 background-repeat: no-repeat;
                 background-size: cover;
-               
+
             }
 
             .login-form {
@@ -34,7 +34,7 @@
                 left: 50%;
                 transform: translate(-50%, -50%);
             }
-            
+
             .login-form img {
                 width: 50%;
                 height: 45%;
@@ -93,11 +93,11 @@
                 transform: scale(0.85);
             }
             @media screen and (max-width: 1000px) {
-               .login-form {
-                height: fit-content;
-                width: 100%;
-                
-            } 
+                .login-form {
+                    height: fit-content;
+                    width: 100%;
+
+                }
             }
 
         </style>
@@ -106,24 +106,23 @@
     <body>
         <div class="container">
             <div class="login-form">
-           
-            <form action="UserController" method="post">
-                 <img alt="UMT Logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Logo_Rasmi_UMT.png/1599px-Logo_Rasmi_UMT.png?20180522033258">
-            <br><br>
-                <input type="text" placeholder="Username" class="form-control" id="usernamame" name="username" >
-                <input type="password" placeholder="Password" class="form-control" id="password" name="password">
-                <input type="hidden" name="action" value="save"/>
-                <br>
-                <input type="radio" name="type" id="type" value="1"/>Student
-                <input type="radio" name="type" id="type" value="2  "/>Staff
 
-                <input type="submit" value="Login" class="btn">
+                <form action="/UserController" method="post">
+                    <img alt="UMT Logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Logo_Rasmi_UMT.png/1599px-Logo_Rasmi_UMT.png?20180522033258">
+                    <br><br>
+                    <input type="text" placeholder="Username" class="form-control" id="usernamame" name="username" >
+                    <input type="password" placeholder="Password" class="form-control" id="password" name="password">
+                    <br>
+                    <input type="radio" name="type" id="type" value="1"/>Student
+                    <input type="radio" name="type" id="type" value="2  "/>Staff
+                    <input type="hidden" name="action" value="login">
+                    <input type="submit" value="Login" class="btn">
 
-                <p>Didn't have an account? <a href="signup.jsp">Sign Up</a></p>
-            </form>
+                    <p>Didn't have an account? <a href="signup.jsp">Sign Up</a></p>
+                </form>
 
-            ${errorMessage}
-        </div>
+                ${errorMessage}
+            </div>
         </div>
 
     </body>

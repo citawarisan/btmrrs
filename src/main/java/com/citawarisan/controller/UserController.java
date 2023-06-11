@@ -135,18 +135,18 @@ public class UserController extends HttpServlet {
         if (req.getParameter("action") != null) {
 
             String email = req.getParameter("email");
-            String pass = req.getParameter("pass");
+            String password = req.getParameter("password");
 
             UserDao userDAO = new UserDao();
 
             try {
-                User user = userDAO.authentication(email, pass);
+                User user = userDAO.authentication(email, password);
 
                 if (user != null) {
 
                     HttpSession session = req.getSession();
-                    session.setAttribute("user", user);
-                    resp.sendRedirect("home.jsp");
+                    session.setAttribute("user", user.getUsername());
+                    resp.sendRedirect("dashboard.jsp");
 
                 } else {
                     req.setAttribute("error", "Invalid username or password!");

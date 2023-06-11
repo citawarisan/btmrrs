@@ -84,13 +84,14 @@
     </head>
     <body>
         <div class="signup-form">
-            <form name="form" action="UserController" method="POST" onsubmit="return validatePassword()">
+            <form name="form" action="/UserController" method="POST" onsubmit="return validatePassword()">
                 <h1>Registration Form</h1>
                 <input type="text" placeholder="Username" class="form-control" name="username" id="username">
                 <input type="password" placeholder="Password" class="form-control" nname="password" id="password">
                 <input type="text" placeholder="Name" class="form-control" name="name" id="name">
                 <input type="text" placeholder="Phone" class="form-control" name="phone" id="phone">
                 <input type="Email" placeholder="Email" class="form-control" name="email" id="email">
+                <input type="hidden" name="action" value="register">
                 <input type="submit" value="Signup" class="btn">
 
                 <p>Already have an account? <a href="login.jsp">Sign Up</a></p>
