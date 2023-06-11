@@ -4,9 +4,17 @@
         <servlet-name>UserController</servlet-name>
         <servlet-class>com.citawarisan.controller.UserController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AdminController</servlet-name>
+        <servlet-class>com.citawarisan.controller.AdminController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UserController</servlet-name>
         <url-pattern>/UserController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminController</servlet-name>
+        <url-pattern>/AdminController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
