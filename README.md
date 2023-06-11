@@ -36,3 +36,7 @@ As such, if there are no specific reasons to use `web.xml`, don't. (Also, it ove
 ```java
 request.getSession().setMaxInactiveInterval(SECONDS);
 ```
+
+## Addendum
+
+- [How many Controllers do I need?](https://softwareengineering.stackexchange.com/questions/208114)
