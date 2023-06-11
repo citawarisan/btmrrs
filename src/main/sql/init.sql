@@ -21,6 +21,12 @@ CREATE TABLE User
 );
 
 
+-- exam related
+CREATE TABLE Faculty
+(
+    faculty_id   INT PRIMARY KEY,
+    faculty_name VARCHAR(255)
+);
 -- generic reservation
 CREATE TABLE Room
 (
@@ -31,6 +37,14 @@ CREATE TABLE Room
     FOREIGN KEY (faculty) REFERENCES Faculty (faculty_id)
 );
 
+CREATE TABLE Course
+(
+    course_code        VARCHAR(255) PRIMARY KEY,
+    course_name        VARCHAR(255),
+    group_number       INT,
+    number_of_students INT,
+    exam_hours         INT DEFAULT 2
+);
 CREATE TABLE Reservation
 (
     id             INT PRIMARY KEY AUTO_INCREMENT,
@@ -43,21 +57,4 @@ CREATE TABLE Reservation
     status         ENUM('pending', 'success', 'cancelled'),
     FOREIGN KEY (user) REFERENCES User (user),
     FOREIGN KEY (room) REFERENCES Room (room_id)
-);
-
-
--- exam related
-CREATE TABLE Faculty
-(
-    faculty_id   INT PRIMARY KEY,
-    faculty_name VARCHAR(255)
-);
-
-CREATE TABLE Course
-(
-    course_code        VARCHAR(255) PRIMARY KEY,
-    course_name        VARCHAR(255),
-    group_number       INT,
-    number_of_students INT,
-    exam_hours         INT DEFAULT 2
 );
