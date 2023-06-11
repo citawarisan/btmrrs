@@ -90,7 +90,7 @@
             }
 
             .btn:hover {
-                transform: scale(0.85);
+                transform: scale(0.96);
             }
             @media screen and (max-width: 1000px) {
                 .login-form {
@@ -112,9 +112,7 @@
                     <br><br>
                     <input type="text" placeholder="Username" class="form-control" id="usernamame" name="username" >
                     <input type="password" placeholder="Password" class="form-control" id="password" name="password">
-                    <br>
-                    <input type="radio" name="type" id="type" value="1"/>Student
-                    <input type="radio" name="type" id="type" value="2  "/>Staff
+
                     <input type="hidden" name="action" value="login">
                     <input type="submit" value="Login" class="btn">
 

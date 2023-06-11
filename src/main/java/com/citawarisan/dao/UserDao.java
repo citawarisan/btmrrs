@@ -21,7 +21,7 @@ public class UserDao {
 
     public void save(User user) throws SQLException {
         try {
-            String mySQLQuery = "insert into user(username, password, type, name, phone, email) values(?, ?, ?, ?, ?, ?)";
+            String mySQLQuery = "insert into user(user, password, type, name, phone_number, email) values(?, ?, ?, ?, ?, ?)";
 
             PreparedStatement myPS = con.prepareStatement(mySQLQuery);
 
@@ -47,7 +47,7 @@ public class UserDao {
         User user = null;
 
         try {
-            String mySQLQuery = "select * from user where username=? and password=?";
+            String mySQLQuery = "select * from user where user=? and password=?";
             PreparedStatement ps = con.prepareStatement(mySQLQuery);
 
             ps.setString(1, username);
@@ -57,16 +57,16 @@ public class UserDao {
 
             while (rs.next()) {
                 user = new User();
-
-                user.setName(rs.getString("name"));
-                user.setPhone(rs.getString("phone_number"));
+                user.setUsername(rs.getString("user"));
+                user.setPassword(rs.getString("password"));
                 user.setType(rs.getInt("type"));
+                user.setName(rs.getString("name"));
                 user.setEmail(rs.getString("email"));
-                user.setPassword(password);
-                user.setUsername(username);
+                user.setPhone(rs.getString("phone_number"));
+                System.out.println("User name is = "+rs.getString("user"));
 
             }
-            con.close();
+
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());

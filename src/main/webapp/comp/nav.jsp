@@ -13,7 +13,7 @@
         <header class="p-3  border-bottom">
             <div class="container">
                 <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                    <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 link-body-emphasis text-decoration-none">
+                    <a href="dashboard.jsp" class="d-flex align-items-center mb-2 mb-lg-0 link-body-emphasis text-decoration-none">
                         <img class="bi me-2" width="120" height="80" role="img" aria-label="Bootstrap"
                              src="https://upload.wikimedia.org/wikipedia/commons/3/3e/Logo_Rasmi_UMT.png">
                     </a>
@@ -37,7 +37,7 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/login">Sign out</a></li>
+                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/UserController?action=signout">Sign out</a></li>
                         </ul>
                     </div>
                 </div>

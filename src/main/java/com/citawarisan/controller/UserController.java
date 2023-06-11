@@ -110,6 +110,7 @@ public class UserController extends HttpServlet {
         String password = req.getParameter("password");
         String name = req.getParameter("name");
         String phone = req.getParameter("phone");
+        int type = Integer.parseInt(req.getParameter("type"));
         String email = req.getParameter("email");
 
         //keep data into javabeans
@@ -119,6 +120,7 @@ public class UserController extends HttpServlet {
         newUser.setPassword(password);
         newUser.setName(name);
         newUser.setPhone(phone);
+        newUser.setType(type);
         newUser.setEmail(email);
 
         //pass the bean to DAO
@@ -127,30 +129,32 @@ public class UserController extends HttpServlet {
 
         //save the bean as attribute and pass to view
         req.setAttribute("user", newUser);
-        resp.sendRedirect("login.jsp");
+        resp.sendRedirect("auth/login.jsp");
     }
 
     private void retrieveUser(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException, ClassNotFoundException {
 
         if (req.getParameter("action") != null) {
 
-            String email = req.getParameter("email");
+            String username = req.getParameter("username");
             String password = req.getParameter("password");
 
             UserDao userDAO = new UserDao();
 
             try {
-                User user = userDAO.authentication(email, password);
+                User user = userDAO.authentication(username, password);
 
                 if (user != null) {
 
                     HttpSession session = req.getSession();
                     session.setAttribute("user", user.getUsername());
+                    session.setAttribute("userObject", user);
+                    System.out.println(session.getAttribute("user"));
                     resp.sendRedirect("dashboard.jsp");
 
                 } else {
                     req.setAttribute("error", "Invalid username or password!");
-                    RequestDispatcher rd = req.getRequestDispatcher("login.jsp");
+                    RequestDispatcher rd = req.getRequestDispatcher("auth/login.jsp");
                     rd.forward(req, resp);
                 }
 
@@ -210,7 +214,7 @@ public class UserController extends HttpServlet {
 
         req.getSession().removeAttribute("user");
 
-        resp.sendRedirect("index.jsp");
+        resp.sendRedirect("index.html");
     }
 
 }

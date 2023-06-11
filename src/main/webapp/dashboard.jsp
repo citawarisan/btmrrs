@@ -1,46 +1,131 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%
+    if (session.getAttribute("user") == null){
+    response.sendRedirect("auth/login.jsp");
+    }
 
+%>
 <!DOCTYPE html>
 <html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Home</title>
-    <link rel="stylesheet" href="styles/main.css"/>
-</head>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Home</title>
+        <style>
+            * {
+                padding: 0;
+                margin: 0;
+                box-sizing: border-box;
+            }
 
-<body>
+            .containerBody {
+                width: 100%;
+                max-height: max-content;
+                background-color: lightgray;
+            }
 
-<%-- this will include the header with the css  --%>
-<%@include file="comp/nav.jsp" %>
+            .main-header {
+                display: flex;
+                width: 80%;
+                margin: auto;
 
-<div class="containerBody">
-    <div class="main-header">
-        <div class="main-side-left">
-            <p>Subject</p>
-            <hr>
-            <div class="subjects">
-                <div class="subcode">
-                    <p>CSF0202</p>
+            }
+
+            /* left styling */
+            .main-side-left, .main-side-right {
+                width: 30%;
+                background-color: white;
+                padding: 20px;
+                border-radius: 20px;
+                margin: 10px 5px 10px 0;
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                text-align: center;
+                min-height: 80vh;
+            }
+
+            .main-side-left > p, .main-side-right > p {
+                font-size: 1.5rem;
+                font-weight: bolder;
+
+                margin-bottom: 1rem;
+            }
+
+            .subcode, .roomdesc {
+                background-color: #e3e3e3;
+                padding: 15px;
+                border-radius: 20px;
+                font-size: 1.2rem;
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                margin-bottom: 5px;
+                font-weight: bold;
+            }
+
+            .subcode > p, .roomdesc > p {
+                margin: 0;
+            }
+
+            /* right styling */
+            .main-side-right {
+                width: 70%;
+            }
+
+
+        </style>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    </head>
+
+    <body>
+
+        <%-- this will include the header with the css  --%>
+        <%@include file="comp/nav.jsp" %>
+        
+        <div class="containerBody">
+            
+            <%--retriveing user object to the dashboard--%>
+            <input type="hidden" id="type" name="userType" value="${userObject.type}" />
+            
+            <div class="main-header staff">
+                <div class="main-side-left">
+                    <p>Subject</p>
+                    <hr>
+                    <div class="subjects">
+                        <div class="subcode">
+                            <p>CSF0202</p>
+                        </div>
+                        <div class="subcode">
+                            <p>CSF0202</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="subcode">
-                    <p>CSF0202</p>
+                <div class="main-side-right">
+                    <p>Reserved Rooms</p>
+                    <hr>
+                    <div class="roomdesc">
+                        <%-- fix this shit, how to add packages --%>
+
+                        <p>something</p>
+                    </div>
+                    <div class="roomdesc">
+                        <p>something</p>
+                    </div>
                 </div>
             </div>
+                        <div class="adminSide">
+                            this is the admin side
+                        </div>
         </div>
-        <div class="main-side-right">
-            <p>Reserved Rooms</p>
-            <hr>
-            <div class="roomdesc">
-                <%-- fix this shit, how to add packages --%>
 
-                <p>something</p>
-            </div>
-            <div class="roomdesc">
-                <p>something</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-</body>
+    </body>
+    <script>
+        $(document).ready(function(){
+           var type =  $('#type').val();
+           if(type == "3"){
+               $('.staff').hide();
+               $('.adminSide').show();
+           }else{
+               $('.staff').show();
+               $('.adminSide').hide();
+           }
+        });
+    </script>
 </html>
