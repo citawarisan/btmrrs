@@ -6,26 +6,29 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Login Form</title>
         <style>
-            body {
+            *{
+                padding: 0;
+                margin: 0;
+                box-sizing: border-box;
+            }
+
+            .container{
                 width: 100%;
                 height: 100%;
-                margin: 0;
-                padding: 0;
-                overflow-x: hidden;
-                background-image: url(sea.jpg);
+                background-image: url(https://mcdn.wallpapersafari.com/medium/31/28/9duO7g.jpg);
                 background-repeat: no-repeat;
                 background-size: cover;
                 background-attachment: fixed;
             }
 
             .login-form {
-                height: 750px;
-                width: 750px;
+                height: fit-content;
+                width: 30%;
                 padding: 50px;
                 text-align: center;
                 background-color: rgba(255, 255, 255, 0.779);
-                margin: 8% auto 0;
-                border-radius: 05px;
+                margin: 10% auto 0 auto;
+                border-radius: 5px;
             }
 
             .login-form img {
@@ -33,16 +36,28 @@
                 height: 45%;
             }
 
-            .login-form input {
+            input[type="text"],
+            input[type="password"]{
                 display: block;
                 width: 100%;
                 padding-left: 30px;
                 height: 75px;
-                box-sizing: border-box;
+
                 outline: none;
                 border: none;
                 font-family: Arial, Helvetica, sans-serif;
-                font-size: 30px;
+                font-size: 1em;
+            }
+            input[type="radio"]{
+
+                width: 3rem;
+
+            }
+            input[type="text"]{
+                border-radius: 20px 20px 0 0;
+            }
+            input[type="password"]{
+                border-radius:0 0  20px 20px;
             }
 
             .txt {
@@ -51,6 +66,10 @@
             }
 
             .btn {
+                font-size: 1em;
+                height: 75px;
+                display: block;
+                width: 100%;
                 margin-top: 60px;
                 margin-bottom: 20px;
                 background: rgb(75, 15, 145);
@@ -63,27 +82,44 @@
             p {
                 padding-top: 25px;
                 text-align: center;
-                font-size: 30px;
+                font-size: 1rem;
             }
 
             .btn:hover {
-                transform: scale(0.96);
+                transform: scale(0.85);
             }
+            @media screen and (max-width: 1000px) {
+               .login-form {
+                height: 100%;
+                width: 100%;
+                
+            } 
+            }
+
+
         </style>
     </head>
 
     <body>
-        <div class="login-form">
-            <img src="logo umt.png">
-            <form action="login.jsp" method="post">
-                <input type="Username" placeholder="Username" class="form-control" id="usernamame" name="username" >
+        <div class="container">
+            <div class="login-form">
+            <img alt="UMT Logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Logo_Rasmi_UMT.png/1599px-Logo_Rasmi_UMT.png?20180522033258">
+            <br><br>
+            <form action="UserController" method="post">
+                <input type="text" placeholder="Username" class="form-control" id="usernamame" name="username" >
                 <input type="password" placeholder="Password" class="form-control" id="password" name="password">
+                <input type="hidden" name="action" value="save"/>
+                <br>
+                <input type="radio" name="type" id="type" value="1"/>Student
+                <input type="radio" name="type" id="type" value="2  "/>Staff
+
                 <input type="submit" value="Login" class="btn">
 
                 <p>Didn't have an account? <a href="signup.jsp">Sign Up</a></p>
             </form>
 
             ${errorMessage}
+        </div>
         </div>
 
     </body>
