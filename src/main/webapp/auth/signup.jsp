@@ -97,7 +97,7 @@
                 <input type="Email" placeholder="Email" class="form-control" name="email" id="email">
                 <br>
                 <input type="radio" name="type" id="type" value="1"/>Student
-                <input type="radio" name="type" id="type" value="2  "/>Staff
+                <input type="radio" name="type" id="type" value="2"/>Staff
                 <input type="hidden" name="action" value="register">
                 <input type="submit" value="Signup" class="btn">
 

@@ -22,7 +22,8 @@
                 max-height: max-content;
                 background-color: lightgray;
             }
-
+            /*the end of the combined body for both*/
+            /*starting of staff css --------------------------------------------------------*/
             .main-header {
                 display: flex;
                 width: 80%;
@@ -67,7 +68,12 @@
             .main-side-right {
                 width: 70%;
             }
-
+            /*ending of staff css =========================================================*/
+            /*starting of admin css--------------------------------------------------------*/
+            
+            
+            
+            /*ending of admin css =========================================================*/
 
         </style>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
