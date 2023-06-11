@@ -5,7 +5,72 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Registration Form</title>
-        <link rel="stylesheet" href="styles/main.css"/>
+        <style>
+            body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+                overflow-x: hidden;
+                background-image: url(https://mcdn.wallpapersafari.com/medium/31/28/9duO7g.jpg);
+                background-repeat: no-repeat;
+                background-size: cover;
+                background-attachment: fixed;
+            }
+
+            .signup-form {
+                height: 500px;
+                width: 500px;
+                padding: 50px;
+                text-align: center;
+                background-color: rgba(255, 255, 255, 0.779);
+                margin: 5% auto 0;
+                border-radius: 05px;
+            }
+
+            .signup-form input {
+                display: block;
+                width: 100%;
+                padding-left: 30px;
+                height: 35px;
+                box-sizing: border-box;
+                outline: none;
+                border: none;
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 15px;
+            }
+
+            .txt {
+                margin: 20px 0px;
+                border-radius: 05px;
+            }
+
+            .btn {
+                margin-top: 60px;
+                margin-bottom: 20px;
+                background: rgb(75, 15, 145);
+                color: rgb(255, 255, 255);
+                border-radius: 40px;
+                cursor: pointer;
+                transition: 0.8s;
+            }
+
+            p {
+                padding-top: 25px;
+                text-align: center;
+                font-size: 15px;
+            }
+
+            .btn:hover {
+                transform: scale(0.96);
+            }
+            #username{
+                border-radius: 20px 20px 0 0;
+            }
+            #email{
+                border-radius:0 0  20px 20px;
+            }
+        </style>
         <script>
             function validatePassword() {
                 var password = document.form.password.value;

@@ -6,7 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Login Form</title>
         <style>
-            *{
+               *{
                 padding: 0;
                 margin: 0;
                 box-sizing: border-box;
@@ -14,11 +14,11 @@
 
             .container{
                 width: 100%;
-                height: 100%;
-                background-image: url(https://mcdn.wallpapersafari.com/medium/31/28/9duO7g.jpg);
+                height: 100vh;
+                background: url(https://mcdn.wallpapersafari.com/medium/31/28/9duO7g.jpg);
                 background-repeat: no-repeat;
                 background-size: cover;
-                background-attachment: fixed;
+               
             }
 
             .login-form {
@@ -27,10 +27,14 @@
                 padding: 50px;
                 text-align: center;
                 background-color: rgba(255, 255, 255, 0.779);
-                margin: 10% auto 0 auto;
+                margin: 0 auto 0 auto;
                 border-radius: 5px;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
             }
-
+            
             .login-form img {
                 width: 50%;
                 height: 45%;
@@ -90,12 +94,11 @@
             }
             @media screen and (max-width: 1000px) {
                .login-form {
-                height: 100%;
+                height: fit-content;
                 width: 100%;
                 
             } 
             }
-
 
         </style>
     </head>
@@ -103,9 +106,10 @@
     <body>
         <div class="container">
             <div class="login-form">
-            <img alt="UMT Logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Logo_Rasmi_UMT.png/1599px-Logo_Rasmi_UMT.png?20180522033258">
-            <br><br>
+           
             <form action="UserController" method="post">
+                 <img alt="UMT Logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Logo_Rasmi_UMT.png/1599px-Logo_Rasmi_UMT.png?20180522033258">
+            <br><br>
                 <input type="text" placeholder="Username" class="form-control" id="usernamame" name="username" >
                 <input type="password" placeholder="Password" class="form-control" id="password" name="password">
                 <input type="hidden" name="action" value="save"/>
