@@ -11,20 +11,20 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>About us</title>
         <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+            />
         <style>
             * {
                 box-sizing: border-box;
                 padding: 0;
                 margin: 0;
             }
-            
+
             body {
-/*                font-family: Arial, Helvetica, sans-serif;*/
+                /*                font-family: Arial, Helvetica, sans-serif;*/
                 overflow-x: hidden;
-                 background-image: url("https://wallpaperaccess.com/full/4685960.jpg");
+                background-image: url("https://wallpaperaccess.com/full/4685960.jpg");
             }
 
 
@@ -116,7 +116,7 @@
             .head-of-profile{
                 margin-top: 2rem;
             }
-            
+
 
 
 
@@ -139,7 +139,7 @@
                 <p>
                     We are student of University Malaysia Terengganu. Bachelor of Computer
                     Science(Mobile Computing) with Honours. We are the lovely Student of
-                    <b><i>Dr.&nbsp;DR. FAIZAH BINTI APLOP</i></b
+                    <b><i>DR. FAIZAH BINTI APLOP</i></b
                     >.
                 </p>
             </div>
@@ -165,15 +165,15 @@
                     <h2 class="head-of-profile" style="text-align: center">Profile Card</h2>
 
                     <div class="card">
-                        <img src="images/Azim.jpg" alt="Hazim" style="width: 100%" />
-                        <h1>ABDULAZIM</h1>
+                        <img src="images/Azim.jpg" alt="Azim" style="width: 100%" />
+                        <h1>ABDUL AZIM</h1>
                         <p class="title">Designer</p>
                         <p>UMT</p>
                         <div style="margin: 24px 0">
-                            <a href="#"><i class="fa fa-dribbble"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-linkedin"></i></a>
-                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="https://github.com/AzimS63190"><i class="fa fa-dribbble"></i></a>
+                            <a href="https://twitter.com/"><i class="fa fa-twitter"></i></a>
+                            <a href="https://www.linkedin.com/"><i class="fa fa-linkedin"></i></a>
+                            <a href="https://www.facebook.com/people/FryDay/100089545462933/?mibextid=LQQJ4d"><i class="fa fa-facebook"></i></a>
                         </div>
                         <p><a class="button" href="tel:+601125444953">Contact</a></p>
                     </div>
@@ -183,10 +183,7 @@
 
                     <div class="card">
                         <img
-                            src="images/Gary.jpg"
-                            alt="Arun"
-                            style="width: 100%"
-                            />
+                            src="images/Gary.jpg" alt="Gary" style="width: 100%"/>
                         <h1>GARY LIM</h1>
                         <p class="title">Non-Working Staff</p>
                         <p>UMT</p>

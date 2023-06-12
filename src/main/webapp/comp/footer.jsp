@@ -30,7 +30,13 @@
         text-decoration: none;
     }
 
+    .footer .creators a {
+        font-size: 0.75rem;
+        font-weight: bold;
+    }
+
     .footer .content2 b {
+        font-size: 0.75rem;
         color: black;
     }
     .footer .content2 p {
@@ -79,17 +85,17 @@
 <div class="footer">           
     <div class="content2">
         <div>
-            <div>
+            <div class="creators">
                 <b>CREATORS: </b>
                 <a href="https://www.instagram.com/komar112011/" target="_blank">OMAR</a>
-                <a href="https://www.instagram.com/wabdlazim/" target="_blank">AZIM</a>
+                <a href="https://www.instagram.com/wzmktn/" target="_blank">AZIM</a>
                 <a href="https://www.instagram.com/garylimkz/" target="_blank">GARY</a> 
             </div>
             <div>
                 <a href="https://ftkki.umt.edu.my" target="_blank"><b>UNIVERSITY MALAYSIA TERENGGANU: UMT</b></a>
             </div>
             <div>
-                <a href="mailto:faizah_aplop@umt.edu.my;"><b>Dr.FAIZAH BINTI APLOP</b></a>
+                <a href="mailto:faizah_aplop@umt.edu.my;"><b>DR. FAIZAH BINTI APLOP</b></a>
             </div>
             <div>
                 <a href="#help.jsp"><b>SUPPORT</b></a>
@@ -99,9 +105,9 @@
         </div>
         <div>
             <a class="image"
-                href="dashboard.jsp"
-                style="
-                background-image: url('https://upload.wikimedia.org/wikipedia/commons/3/3e/Logo_Rasmi_UMT.png' )"></a>
+               href="dashboard.jsp"
+               style="
+               background-image: url('https://upload.wikimedia.org/wikipedia/commons/3/3e/Logo_Rasmi_UMT.png' )"></a>
             <p>©2023 UMT Citawarisan</p>
         </div>
     </div>
