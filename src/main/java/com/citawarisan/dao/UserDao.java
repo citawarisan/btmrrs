@@ -120,15 +120,15 @@ public class UserDao {
         return userList;
     }
 
-    public User retrieveUserByUserId(int userid) throws ClassNotFoundException, SQLException {
+    public User retrieveUserByUserId(String username) throws ClassNotFoundException, SQLException {
 
         User user = new User();
 
         try {
             PreparedStatement myPS = DBConnection.getConnection()
-                    .prepareStatement("select * from user where userid=?");
+                    .prepareStatement("select * from user where user=?");
 
-            myPS.setInt(1, userid);
+            myPS.setString(1, username);
             ResultSet rs = myPS.executeQuery();
 
             while (rs.next()) {
@@ -150,7 +150,7 @@ public class UserDao {
     public void update(User user) {
 
         try {
-            String myQ = "update user set email=?, password=?, phone_number=?, name=? WHERE username=?";
+            String myQ = "update user set email=?, password=?, phone_number=?, name=? WHERE user=?";
 
             PreparedStatement myPS = con.prepareStatement(myQ);
 

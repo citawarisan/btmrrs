@@ -39,7 +39,7 @@
                             <%=session.getAttribute("user")%>
                         </a>
                         <ul class="dropdown-menu text-small">
-                            <li><a class="dropdown-item" href="#">Edit Profile</a></li>
+                            <li><a class="dropdown-item" href="UserController?action=showUpdateForm&username='<%=session.getAttribute("user")%>'">Edit Profile</a></li>
 
                             <li>
                                 <hr class="dropdown-divider">

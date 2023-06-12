@@ -17,11 +17,9 @@
     </head>
     <body>
 
-        <jsp:include page=""/>
+        <jsp:include page="../comp/nav.jsp"/>
 
-        <%
-            User user = (User) request.getSession().getAttribute("user");
-        %>
+       
 
     <body>
         <div class="container">
@@ -31,21 +29,30 @@
             <form action="UserController" method="POST">
                 <div class="form-group">
                     <label for="username">Username</label>
-                    <input type="text" class="form-control" name="username" value="<%=user.getUsername()%>">
+                    <input type="text" class="form-control" name="username" value="${user.username}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" name="name" value="${user.name}">
                 </div>
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" class="form-control" name="email" value="<%=user.getEmail()%>">
+                    <input type="email" class="form-control" name="email" value="${user.email}">
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" class="form-control" name="password" value="">
+                    <input type="text" class="form-control" name="password" value="${user.password}">
                 </div>
-                <input type="hidden" name="id" value="<%=user.getUsername()%>">
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input type="number" class="form-control" name="phone" value="${user.phone}">
+                </div>
+                <input type="hidden" name="id" value="${user.type}">
+                <input type="hidden" name="action" value="update">
                 <button type="submit">Save</button>
             </form>
 
         </div>
-    </div>
+   <jsp:include page="../comp/footer.jsp"/>
 </body>
 </html>

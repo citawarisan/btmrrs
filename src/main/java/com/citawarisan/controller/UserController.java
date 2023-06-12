@@ -36,6 +36,9 @@ public class UserController extends HttpServlet {
                 case "update":
                     updateUser(request, response);
                     break;
+                case "showUpdateForm":
+                    showUpdatForm(request, response);
+                    break;
 
                 case "delete":
                     deleteUser(request, response);
@@ -112,7 +115,7 @@ public class UserController extends HttpServlet {
         String phone = req.getParameter("phone");
         int type = Integer.parseInt(req.getParameter("type"));
         String email = req.getParameter("email");
-        
+
         //keep data into javabeans
         User newUser = new User();
 
@@ -127,12 +130,12 @@ public class UserController extends HttpServlet {
         UserDao user = new UserDao();
         RequestDispatcher rd = req.getRequestDispatcher("auth/signup.jsp");
         int result = user.save(newUser);
-        if(result > 0){
-        //save the bean as attribute and pass to view
-        req.setAttribute("user", newUser);
-        req.setAttribute("errorMessage", "success");
-        rd.forward(req, resp);
-        }else{
+        if (result > 0) {
+            //save the bean as attribute and pass to view
+            req.setAttribute("user", newUser);
+            req.setAttribute("errorMessage", "success");
+            rd.forward(req, resp);
+        } else {
             req.setAttribute("errorMessage", "fasle");
             rd.forward(req, resp);
         }
@@ -173,7 +176,7 @@ public class UserController extends HttpServlet {
     }
 
     private void updateUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException, ClassNotFoundException {
-
+        
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String name = request.getParameter("name");
@@ -187,15 +190,25 @@ public class UserController extends HttpServlet {
         user.setName(name);
         user.setPhone(phone);
         user.setEmail(email);
+        
+        // we can do anything with user object coming back here, but idk for now(sendRedirect)
+        new UserDao().update(user);
 
-        UserDao userDAO = new UserDao();
+//        HttpSession session = request.getSession();
+//        session.setAttribute("user", user);
+        System.out.println(user.toString());
+        response.sendRedirect("dashboard.jsp");
+    }
+     private void showUpdatForm(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException, ClassNotFoundException {
+         String username = (String)request.getSession().getAttribute("user");
+         System.out.println(username);
+        
+        User user = new UserDao().retrieveUserByUserId(username);
+         System.out.println(user.toString());
+        RequestDispatcher rd =  request.getRequestDispatcher("auth/userProfile.jsp");
 
-        userDAO.update(user);
-
-        HttpSession session = request.getSession();
-        session.setAttribute("user", user);
-
-        response.sendRedirect("userprofile.jsp");
+        request.setAttribute("user", user);
+        rd.forward(request, response);
     }
 
     private void deleteUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException, ClassNotFoundException {
