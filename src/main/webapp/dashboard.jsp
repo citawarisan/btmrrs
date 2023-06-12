@@ -1,7 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%
-    if (session.getAttribute("user") == null){
-    response.sendRedirect("auth/login.jsp");
+    if (session.getAttribute("user") == null) {
+        response.sendRedirect("auth/login.jsp");
     }
 
 %>
@@ -20,7 +20,9 @@
             .containerBody {
                 width: 100%;
                 max-height: max-content;
-                background-color: lightgray;
+                background-image: url("https://wallpaperaccess.com/full/4685960.jpg");
+                background-repeat: no-repeat;
+                background-size: cover;
             }
             /*the end of the combined body for both*/
             /*starting of staff css --------------------------------------------------------*/
@@ -34,7 +36,7 @@
             /* left styling */
             .main-side-left, .main-side-right {
                 width: 30%;
-                background-color: white;
+                background-color: rgba(255, 255, 255, 0.779);
                 padding: 20px;
                 border-radius: 20px;
                 margin: 10px 5px 10px 0;
@@ -70,11 +72,11 @@
             }
             /*ending of staff css =========================================================*/
             /*starting of admin css--------------------------------------------------------*/
-            
-            
-            
-            /*ending of admin css =========================================================*/
 
+
+
+            /*ending of admin css =========================================================*/
+           
         </style>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -84,12 +86,12 @@
 
         <%-- this will include the header with the css  --%>
         <%@include file="comp/nav.jsp" %>
-        
+
         <div class="containerBody">
-            
+
             <%--retriveing user object to the dashboard--%>
             <input type="hidden" id="type" name="userType" value="${userObject.type}" />
-            
+
             <div class="main-header staff">
                 <div class="main-side-left">
                     <p>Subject</p>
@@ -116,22 +118,22 @@
                     </div>
                 </div>
             </div>
-                        <div class="adminSide">
-                            this is the admin side
-                        </div>
+            <div class="adminSide">
+                this is the admin side
+            </div>
         </div>
-
+                        <%@include file="comp/footer.jsp" %>
     </body>
     <script>
-        $(document).ready(function(){
-           var type =  $('#type').val();
-           if(type == "3"){
-               $('.staff').hide();
-               $('.adminSide').show();
-           }else{
-               $('.staff').show();
-               $('.adminSide').hide();
-           }
+        $(document).ready(function () {
+            var type = $('#type').val();
+            if (type == "3") {
+                $('.staff').hide();
+                $('.adminSide').show();
+            } else {
+                $('.staff').show();
+                $('.adminSide').hide();
+            }
         });
     </script>
 </html>
