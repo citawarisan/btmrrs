@@ -112,7 +112,7 @@ public class UserController extends HttpServlet {
         String phone = req.getParameter("phone");
         int type = Integer.parseInt(req.getParameter("type"));
         String email = req.getParameter("email");
-
+        
         //keep data into javabeans
         User newUser = new User();
 
@@ -125,11 +125,17 @@ public class UserController extends HttpServlet {
 
         //pass the bean to DAO
         UserDao user = new UserDao();
-        user.save(newUser);
-
+        RequestDispatcher rd = req.getRequestDispatcher("auth/signup.jsp");
+        int result = user.save(newUser);
+        if(result > 0){
         //save the bean as attribute and pass to view
         req.setAttribute("user", newUser);
-        resp.sendRedirect("auth/login.jsp");
+        req.setAttribute("errorMessage", "success");
+        rd.forward(req, resp);
+        }else{
+            req.setAttribute("errorMessage", "fasle");
+            rd.forward(req, resp);
+        }
     }
 
     private void retrieveUser(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException, ClassNotFoundException {
@@ -154,6 +160,7 @@ public class UserController extends HttpServlet {
 
                 } else {
                     req.setAttribute("error", "Invalid username or password!");
+                    req.setAttribute("errorMessage", "false");
                     RequestDispatcher rd = req.getRequestDispatcher("auth/login.jsp");
                     rd.forward(req, resp);
                 }

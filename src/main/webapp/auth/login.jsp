@@ -4,6 +4,8 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.2/dist/sweetalert2.min.css">
+
         <title>Login Form</title>
         <style>
             *{
@@ -119,9 +121,24 @@
                     <p>Didn't have an account? <a href="signup.jsp">Sign Up</a></p>
                 </form>
 
-                ${errorMessage}
+                <input type="hidden" id="errorMessage" value="${errorMessage}">
+                <input type="hidden" id="error" value="${error}">
             </div>
         </div>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.2/dist/sweetalert2.min.js"></script>
+        <script>
+            var status = document.getElementById("errorMessage").value;
+            var error = document.getElementById("error").value;
+            console.log(status);
+            if (status === "false") {
+                Swal.fire({
+                    title: 'Something went wrong!',
+                    text: error,
+                    icon: 'error',
+                    confirmButtonText: 'Try again'
+                });
+            }
+        </script>
 
     </body>
 

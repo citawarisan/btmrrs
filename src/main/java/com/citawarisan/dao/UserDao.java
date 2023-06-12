@@ -19,7 +19,7 @@ public class UserDao {
         con = DBConnection.getConnection();
     }
 
-    public void save(User user) throws SQLException {
+    public int save(User user) throws SQLException {
         try {
             String mySQLQuery = "insert into user(user, password, type, name, phone_number, email) values(?, ?, ?, ?, ?, ?)";
 
@@ -32,7 +32,7 @@ public class UserDao {
             myPS.setString(5, user.getPhone());
             myPS.setString(6, user.getEmail());
 
-            myPS.executeUpdate();
+            return myPS.executeUpdate();
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -40,6 +40,7 @@ public class UserDao {
         } finally {
             con.close();
         }
+        return 0;
     }
 
     public User authentication(String username, String password) throws SQLException {

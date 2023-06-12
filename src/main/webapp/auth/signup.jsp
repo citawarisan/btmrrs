@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.2/dist/sweetalert2.min.css">
         <title>Registration Form</title>
         <style>
             body {
@@ -103,10 +104,37 @@
 
                 <p>Already have an account? <a href="login.jsp">Login</a></p>
             </form>
+            <button onclick="show()">Show Alert</button>
 
         </div>
 
-        ${errorMessage}
+        <input type="hidden" id="errorMessage" value="<%=request.getAttribute("errorMessage")%>">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.2/dist/sweetalert2.min.js"></script>
+        <script>
 
+    var status = document.getElementById("errorMessage").value;
+    if (status === "false") {
+        Swal.fire({
+            title: 'Sorry!',
+            text: 'Please enter all the info correctly',
+            icon: 'error',
+            confirmButtonText: 'Try Again'
+        });
+    }
+    if (status === "success") {
+        Swal.fire({
+            title: 'Success!',
+            text: 'Account is Created >_<',
+            icon: 'success',
+            confirmButtonText: 'OK'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "auth/login.jsp"; // Replace "another-page.jsp" with the desired URL or JSP page
+            }
+        });
+    }
+
+
+        </script>
     </body>
 </html>
