@@ -6,7 +6,7 @@ import com.citawarisan.model.Faculty;
 import com.citawarisan.model.Reservation;
 import com.citawarisan.model.Room;
 import com.citawarisan.model.User;
-import com.citawarisan.model.UserReservations;
+
 import com.citawarisan.util.DBConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
