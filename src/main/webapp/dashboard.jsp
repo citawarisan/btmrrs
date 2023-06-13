@@ -1,9 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%
-    if (session.getAttribute("user") == null) {
-        response.sendRedirect("auth/login.jsp");
-    }
-
+    if (session.getAttribute("user") == null)
+        response.sendRedirect("/login");
 %>
 <!DOCTYPE html>
 <html>
@@ -90,7 +88,7 @@
         <div class="containerBody">
 
             <%--retriveing user object to the dashboard--%>
-            <input type="hidden" id="type" name="userType" value="${userObject.type}" />
+            <input type="hidden" id="type" name="userType" value="${user.type}" />
 
             <div class="main-header staff">
                 <div class="main-side-left">

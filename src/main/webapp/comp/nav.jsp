@@ -1,4 +1,6 @@
+<%@ page import="com.citawarisan.model.User" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
+
 
 <div id="nav">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -36,15 +38,15 @@
                     <div class="dropdown text-end">
                         <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <%=session.getAttribute("user")%>
+                            <%=((User)session.getAttribute("user")).getUsername()%>
                         </a>
                         <ul class="dropdown-menu text-small">
-                            <li><a class="dropdown-item" href="UserController?action=showUpdateForm&username='<%=session.getAttribute("user")%>'">Edit Profile</a></li>
+                            <li><a class="dropdown-item" href="/update?username=<%=((User) request.getSession().getAttribute("user")).getUsername()%>">Edit Profile</a></li>
 
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/UserController?action=signout">Sign out</a></li>
+                            <li><a class="dropdown-item" href="logout">Sign out</a></li>
                         </ul>
                     </div>
                 </div>
