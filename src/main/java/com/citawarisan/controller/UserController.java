@@ -1,6 +1,7 @@
 package com.citawarisan.controller;
 
 import com.citawarisan.dao.UserDao;
+import com.citawarisan.model.CourseInformation;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -9,6 +10,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import com.citawarisan.model.User;
+import java.util.List;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -46,6 +48,9 @@ public class UserController extends HttpServlet {
 
                 case "signout":
                     signOut(request, response);
+                    break;
+                case "displayList":
+                    displayList(request, response);
                     break;
             }
         } else {
@@ -158,8 +163,12 @@ public class UserController extends HttpServlet {
                     HttpSession session = req.getSession();
                     session.setAttribute("user", user.getUsername());
                     session.setAttribute("userObject", user);
+                    if(user.getType() == 1){
+                        displayList(req, resp);
+                    }else{
                     System.out.println(session.getAttribute("user"));
                     resp.sendRedirect("dashboard.jsp");
+                    }
 
                 } else {
                     req.setAttribute("error", "Invalid username or password!");
@@ -176,7 +185,7 @@ public class UserController extends HttpServlet {
     }
 
     private void updateUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException, ClassNotFoundException {
-        
+
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String name = request.getParameter("name");
@@ -190,7 +199,7 @@ public class UserController extends HttpServlet {
         user.setName(name);
         user.setPhone(phone);
         user.setEmail(email);
-        
+
         // we can do anything with user object coming back here, but idk for now(sendRedirect)
         new UserDao().update(user);
 
@@ -199,13 +208,14 @@ public class UserController extends HttpServlet {
         System.out.println(user.toString());
         response.sendRedirect("dashboard.jsp");
     }
-     private void showUpdatForm(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException, ClassNotFoundException {
-         String username = (String)request.getSession().getAttribute("user");
-         System.out.println(username);
-        
+
+    private void showUpdatForm(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException, ClassNotFoundException {
+        String username = (String) request.getSession().getAttribute("user");
+        System.out.println(username);
+
         User user = new UserDao().retrieveUserByUserId(username);
-         System.out.println(user.toString());
-        RequestDispatcher rd =  request.getRequestDispatcher("auth/userProfile.jsp");
+        System.out.println(user.toString());
+        RequestDispatcher rd = request.getRequestDispatcher("auth/userProfile.jsp");
 
         request.setAttribute("user", user);
         rd.forward(request, response);
@@ -236,5 +246,20 @@ public class UserController extends HttpServlet {
 
         resp.sendRedirect("index.html");
     }
+     private void displayList(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException, ClassNotFoundException {
+
+       
+
+            List<CourseInformation> ci = new UserDao().displaySchedule();
+
+            
+            RequestDispatcher rd = req.getRequestDispatcher("studentDisplay.jsp");
+            req.setAttribute("errorMessage", "false");
+            req.setAttribute("studentInfo", ci);
+           
+            rd.forward(req, resp);    
+   
+
+}
 
 }
