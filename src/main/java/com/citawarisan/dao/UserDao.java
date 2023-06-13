@@ -2,59 +2,41 @@ package com.citawarisan.dao;
 
 import com.citawarisan.model.User;
 import com.citawarisan.util.DBConnection;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class UserDao {
+    public int createUser(User user) {
+        String query = "INSERT INTO User(user, password, type, name, phone_number, email) VALUES (?, ?, ?, ?, ?, ?)";
 
-    private final Connection con;
-
-    public UserDao() throws SQLException, ClassNotFoundException {
-        con = DBConnection.getConnection();
-    }
-
-    public int save(User user) throws SQLException {
-        try {
-            String mySQLQuery = "insert into user(user, password, type, name, phone_number, email) values(?, ?, ?, ?, ?, ?)";
-
-            PreparedStatement myPS = con.prepareStatement(mySQLQuery);
-
-            myPS.setString(1, user.getUsername());
-            myPS.setString(2, user.getPassword());
-            myPS.setInt(3, user.getType());
-            myPS.setString(4, user.getName());
-            myPS.setString(5, user.getPhone());
-            myPS.setString(6, user.getEmail());
-
-            return myPS.executeUpdate();
-
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getPassword());
+            ps.setInt(3, user.getType());
+            ps.setString(4, user.getName());
+            ps.setString(5, user.getPhone());
+            ps.setString(6, user.getEmail());
+            return ps.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-
-        } finally {
-            con.close();
+            e.printStackTrace();
         }
+
         return 0;
     }
 
-    public User authentication(String username, String password) throws SQLException {
-        ResultSet rs = null;
+    public User matchUser(String username, String password) {
         User user = null;
+        String query = "SELECT * FROM User WHERE user=? AND password=?";
 
-        try {
-            String mySQLQuery = "select * from user where user=? and password=?";
-            PreparedStatement ps = con.prepareStatement(mySQLQuery);
-
+        try (Connection con = DBConnection.getConnection(); PreparedStatement ps = con.prepareStatement(query)) {
             ps.setString(1, username);
             ps.setString(2, password);
-
-            rs = ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
                 user = new User();
@@ -64,74 +46,49 @@ public class UserDao {
                 user.setName(rs.getString("name"));
                 user.setEmail(rs.getString("email"));
                 user.setPhone(rs.getString("phone_number"));
-                System.out.println("User name is = "+rs.getString("user"));
-
+                System.out.println("User name is = " + rs.getString("user"));
             }
-
-
+            
+            rs.close();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-
-        } finally {
-            if (rs != null) {
-                rs.close();
-            }
-            con.close();
+            e.printStackTrace();
         }
 
         return user;
     }
 
-    public List<User> retrieveAll() throws SQLException {
+    public List<User> getUsers() {
         List<User> userList = new ArrayList<>();
-
-        User user;
-        ResultSet rs = null;
-
-        try {
-            String sqlQuery = "select * from user";
-            PreparedStatement stat = con.prepareStatement(sqlQuery);
-            rs = stat.executeQuery(sqlQuery);
-
+        String query = "SELECT * FROM User";
+        
+        try (Connection con = DBConnection.getConnection(); ResultSet rs = con.createStatement().executeQuery(query)) {
             while (rs.next()) {
-                user = new User();
-
+                User user = new User();
                 user.setUsername(rs.getString("username"));
                 user.setPassword(rs.getString("password"));
                 user.setType(rs.getInt("type"));
                 user.setName(rs.getString("name"));
                 user.setEmail(rs.getString("email"));
                 user.setPhone(rs.getString("phone_number"));
-
                 userList.add(user);
             }
-
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-
-        } finally {
-            if (rs != null) {
-                rs.close();
-            }
-
-            con.close();
+            e.printStackTrace();
         }
 
         return userList;
     }
 
-    public User retrieveUserByUserId(String username) throws ClassNotFoundException, SQLException {
+    public User getUser(String username) {
+        User user = null;
+        String query = "SELECT * FROM User WHERE user=?";
+        
+        try (Connection con = DBConnection.getConnection(); PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
 
-        User user = new User();
-
-        try {
-            PreparedStatement myPS = DBConnection.getConnection()
-                    .prepareStatement("select * from user where user=?");
-
-            myPS.setString(1, username);
-            ResultSet rs = myPS.executeQuery();
-
-            while (rs.next()) {
+            if (rs.next()) {
+                user = new User();
                 user.setUsername(rs.getString(1));
                 user.setPassword(rs.getString(2));
                 user.setType(rs.getInt(3));
@@ -139,54 +96,42 @@ public class UserDao {
                 user.setEmail(rs.getString(5));
                 user.setPhone(rs.getString(6));
             }
+            
+            rs.close();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            con.close();
+            e.printStackTrace();
         }
+        
         return user;
     }
 
-    public void update(User user) {
+    public boolean updateUser(User user) {
+        String query = "UPDATE User SET email=?, password=?, phone_number=?, name=? WHERE user=?";
+        boolean success = false;
 
-        try {
-            String myQ = "update user set email=?, password=?, phone_number=?, name=? WHERE user=?";
+        try (Connection con = DBConnection.getConnection(); PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setString(1, user.getEmail());
+            ps.setString(2, user.getPassword());
+            ps.setString(3, user.getPhone());
+            ps.setString(4, user.getName());
+            ps.setString(5, user.getUsername());
+            ps.executeUpdate();
 
-            PreparedStatement myPS = con.prepareStatement(myQ);
-
-            myPS.setString(1, user.getEmail());
-            myPS.setString(2, user.getPassword());
-            myPS.setString(3, user.getPhone());
-            myPS.setString(4, user.getName());
-            myPS.setString(5, user.getUsername());
-
-            myPS.executeUpdate();
-
+            success = true;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-
-        } finally {
-            try {
-                con.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            e.printStackTrace();
         }
 
+        return success;
     }
 
     public void delete(User user) {
-
-        String myQ = "DELETE FROM user WHERE username=?";
-        try {
-            PreparedStatement myPs = con.prepareStatement(myQ);
-            myPs.setString(1, user.getUsername());
-
-            myPs.executeUpdate();
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+        String query = "DELETE FROM user WHERE user=?";
+        try (Connection con = DBConnection.getConnection(); PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setString(1, user.getUsername());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-
     }
-
 }
