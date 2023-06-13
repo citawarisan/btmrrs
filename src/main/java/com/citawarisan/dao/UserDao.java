@@ -1,7 +1,12 @@
 package com.citawarisan.dao;
 
+import com.citawarisan.model.Course;
 import com.citawarisan.model.CourseInformation;
+import com.citawarisan.model.Faculty;
+import com.citawarisan.model.Reservation;
+import com.citawarisan.model.Room;
 import com.citawarisan.model.User;
+import com.citawarisan.model.UserReservations;
 import com.citawarisan.util.DBConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -38,8 +43,6 @@ public class UserDao {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
 
-        } finally {
-            con.close();
         }
         return 0;
     }
@@ -65,19 +68,13 @@ public class UserDao {
                 user.setName(rs.getString("name"));
                 user.setEmail(rs.getString("email"));
                 user.setPhone(rs.getString("phone_number"));
-                System.out.println("User name is = "+rs.getString("user"));
+                System.out.println("User name is = " + rs.getString("user"));
 
             }
-
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
 
-        } finally {
-            if (rs != null) {
-                rs.close();
-            }
-            con.close();
         }
 
         return user;
@@ -110,12 +107,6 @@ public class UserDao {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
 
-        } finally {
-            if (rs != null) {
-                rs.close();
-            }
-
-            con.close();
         }
 
         return userList;
@@ -142,8 +133,6 @@ public class UserDao {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        } finally {
-            con.close();
         }
         return user;
     }
@@ -166,12 +155,6 @@ public class UserDao {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
 
-        } finally {
-            try {
-                con.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
 
     }
@@ -189,7 +172,8 @@ public class UserDao {
         }
 
     }
-     public List<CourseInformation> displaySchedule() {
+
+    public List<CourseInformation> displaySchedule() {
         List<CourseInformation> info = new ArrayList<>();
         try {
             ResultSet rs = con.createStatement().executeQuery(
@@ -220,12 +204,126 @@ public class UserDao {
 
                 info.add(courseInformation);
             }
-            System.out.println("number of rows"+count);
+            System.out.println("number of rows" + count);
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return info;
+    }
+
+    public List<Course> retrieveUserSubjects(String username) {
+        List<Course> c = new ArrayList<>();
+        String myQ = "SELECT c.course_code, c.course_name, c.group_number, c.number_of_students, c.exam_hours "
+                + "FROM course c "
+                + "JOIN user_courses i ON c.course_code = i.course_code "
+                + "JOIN user u ON u.user = i.user "
+                + "WHERE u.user = ?";
+        try {
+            PreparedStatement myPS = DBConnection.getConnection()
+                    .prepareStatement(myQ);
+            myPS.setString(1, username);
+
+            ResultSet rs = myPS.executeQuery();
+            while (rs.next()) {
+                Course course = new Course();
+                course.setCourseCode(rs.getString(1));
+                course.setCourseName(rs.getString(2));
+                course.setGroupNumber(rs.getInt(3));
+                course.setNumberOfStudents(rs.getInt(4));
+                course.setExamHours(rs.getInt(5));
+                c.add(course);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return c;
+    }
+
+    public List<Faculty> retrieveUserFaculties(String u) {
+        List<Faculty> faculties = new ArrayList<>();
+        String query = "SELECT f.faculty_id, f.faculty_name FROM faculty f JOIN room r ON f.faculty_id = r.faculty JOIN reservation rs ON r.room_id = rs.room JOIN user u on rs.user = u.user WHERE u.user = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setString(1, u);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Faculty faculty = new Faculty();
+                faculty.setFacultyId(rs.getInt("faculty_id"));
+                faculty.setFacultyName(rs.getString("faculty_name"));
+                
+                faculties.add(faculty);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return faculties;
+    }
+
+    public List<Room> retrieveUserRooms(String username) {
+    List<Room> rooms = new ArrayList<>();
+
+    try{
+        String query = "SELECT  r.room_id, r.room_name, r.room_size,r.faculty FROM  room r  JOIN reservation rs ON r.room_id = rs.room JOIN user u on rs.user = u.user WHERE u.user = ?";
+        PreparedStatement ps = con.prepareStatement(query);
+        ps.setString(1, username);
+
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Room room = new Room();
+            room.setRoomId(rs.getString("room_id"));
+            room.setRoomName(rs.getString("room_name"));
+            room.setRoomSize(rs.getInt("room_size"));
+            room.setFaculty(rs.getInt("faculty"));
+            rooms.add(room);
+        }
+    }catch(SQLException e){
+        e.printStackTrace();
+    }
+
+    return rooms;
+}
+
+
+    public List<Reservation> retrieveUserReservations(String u) {
+        List<Reservation> reservations = new ArrayList<>();
+        String query = "SELECT  rs.id, rs.user,rs.room, rs.seats, rs.start_datetime, rs.end_datetime, rs.details, rs.status FROM  reservation rs  JOIN user u on rs.user = u.user WHERE u.user = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setString(1, u);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Reservation reservation = new Reservation();
+                reservation.setId(rs.getInt("id"));
+                reservation.setUser(rs.getString("user"));
+                reservation.setRoom(rs.getString("room"));
+                reservation.setSeats(rs.getInt("seats"));
+                reservation.setStartDateTime(rs.getTimestamp("start_datetime").toLocalDateTime());
+                reservation.setEndDateTime(rs.getTimestamp("end_datetime").toLocalDateTime());
+                reservation.setDetails(rs.getString("details"));
+                reservation.setStatus(rs.getString("status"));
+                // Set other reservation properties as needed
+                reservations.add(reservation);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return reservations;
+    }
+    public void deleteReservation(int id) {
+
+        String myQ = "DELETE FROM reservation WHERE id = ?;";
+        try {
+            PreparedStatement myPs = con.prepareStatement(myQ);
+            myPs.setInt(1, id);
+
+            myPs.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
 }

@@ -1,7 +1,11 @@
 package com.citawarisan.controller;
 
 import com.citawarisan.dao.UserDao;
+import com.citawarisan.model.Course;
 import com.citawarisan.model.CourseInformation;
+import com.citawarisan.model.Faculty;
+import com.citawarisan.model.Reservation;
+import com.citawarisan.model.Room;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -10,6 +14,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import com.citawarisan.model.User;
+import com.citawarisan.model.UserReservations;
 import java.util.List;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -51,6 +56,12 @@ public class UserController extends HttpServlet {
                     break;
                 case "displayList":
                     displayList(request, response);
+                    break;
+                case "regenerate":
+                    regenerate(request, response);
+                    break;
+                case "deleteReserve":
+                    deleteReserve(request, response);
                     break;
             }
         } else {
@@ -163,11 +174,20 @@ public class UserController extends HttpServlet {
                     HttpSession session = req.getSession();
                     session.setAttribute("user", user.getUsername());
                     session.setAttribute("userObject", user);
-                    if(user.getType() == 1){
+                    if (user.getType() == 1) {
                         displayList(req, resp);
-                    }else{
-                    System.out.println(session.getAttribute("user"));
-                    resp.sendRedirect("dashboard.jsp");
+                    } else {
+                        RequestDispatcher rd = req.getRequestDispatcher("dashboard.jsp");
+                        List<Course> c = userDAO.retrieveUserSubjects(user.getUsername());
+                        List<Faculty> f = userDAO.retrieveUserFaculties(user.getUsername());
+                        List<Room> r = userDAO.retrieveUserRooms(user.getUsername());
+                        List<Reservation> rs = userDAO.retrieveUserReservations(user.getUsername());
+
+                        req.setAttribute("f", f);
+                        req.setAttribute("r", r);
+                        req.setAttribute("rs", rs);
+                        req.setAttribute("courses", c);
+                        rd.forward(req, resp);
                     }
 
                 } else {
@@ -246,20 +266,48 @@ public class UserController extends HttpServlet {
 
         resp.sendRedirect("index.html");
     }
-     private void displayList(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException, ClassNotFoundException {
 
-       
+    private void displayList(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException, ClassNotFoundException {
 
-            List<CourseInformation> ci = new UserDao().displaySchedule();
+        List<CourseInformation> ci = new UserDao().displaySchedule();
 
-            
-            RequestDispatcher rd = req.getRequestDispatcher("studentDisplay.jsp");
-            req.setAttribute("errorMessage", "false");
-            req.setAttribute("studentInfo", ci);
-           
-            rd.forward(req, resp);    
-   
+        RequestDispatcher rd = req.getRequestDispatcher("studentDisplay.jsp");
+        req.setAttribute("errorMessage", "false");
+        req.setAttribute("studentInfo", ci);
 
-}
+        rd.forward(req, resp);
+
+    }
+
+    private void deleteReserve(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException, ClassNotFoundException {
+
+        int id = Integer.parseInt(request.getParameter("rsid"));
+
+        UserDao userDAO = new UserDao();
+
+        userDAO.deleteReservation(id);
+        RequestDispatcher rd = request.getRequestDispatcher("UserController");
+        request.setAttribute("action", "regenerate");
+        rd.forward(request, response);
+
+    }
+
+    private void regenerate(HttpServletRequest req, HttpServletResponse res) throws SQLException, ServletException, IOException, ClassNotFoundException {
+        UserDao userDAO = new UserDao();
+        HttpSession session = req.getSession();
+        String user = (String) session.getAttribute("user");
+        RequestDispatcher rd = req.getRequestDispatcher("dashboard.jsp");
+        List<Course> c = userDAO.retrieveUserSubjects(user);
+        List<Faculty> f = userDAO.retrieveUserFaculties(user);
+        List<Room> r = userDAO.retrieveUserRooms(user);
+        List<Reservation> rs = userDAO.retrieveUserReservations(user);
+
+        req.setAttribute("f", f);
+        req.setAttribute("r", r);
+        req.setAttribute("rs", rs);
+        req.setAttribute("courses", c);
+        rd.forward(req, res);
+
+    }
 
 }

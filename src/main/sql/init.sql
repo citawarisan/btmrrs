@@ -52,7 +52,7 @@ course_code        VARCHAR(255) NOT NULL,
 user               VARCHAR(255) NOT NULL,
 FOREIGN KEY (course_code) REFERENCES Course(course_code),
 FOREIGN KEY (user) REFERENCES User(user)
-);
+);  
 CREATE TABLE Reservation
 (
     id             INT PRIMARY KEY AUTO_INCREMENT,
