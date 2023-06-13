@@ -89,7 +89,7 @@
     </head>
     <body>
         <div class="signup-form">
-            <form name="form" action="/UserController" method="POST" onsubmit="return validatePassword()">
+            <form name="form" action="/signup" method="POST" onsubmit="return validatePassword()">
                 <h1>Registration Form</h1>
                 <input type="text" placeholder="Username" class="form-control" name="username" id="username">
                 <input type="password" placeholder="Password" class="form-control" name="password" id="password">
@@ -97,12 +97,12 @@
                 <input type="text" placeholder="Phone" class="form-control" name="phone" id="phone">
                 <input type="Email" placeholder="Email" class="form-control" name="email" id="email">
                 <br>
-                <input type="radio" name="type" id="type" value="1"/>Student
-                <input type="radio" name="type" id="type" value="2"/>Staff
+                <input type="radio" name="type" value="1" checked/>Student
+                <input type="radio" name="type" value="2"/>Staff
                 <input type="hidden" name="action" value="register">
                 <input type="submit" value="Signup" class="btn">
 
-                <p>Already have an account? <a href="login.jsp">Login</a></p>
+                <p>Already have an account? <a href="/login">Login</a></p>
             </form>
             <button onclick="show()">Show Alert</button>
 

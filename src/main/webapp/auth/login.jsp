@@ -109,16 +109,16 @@
         <div class="container">
             <div class="login-form">
 
-                <form action="/UserController" method="post">
+                <form action="/login" method="POST">
                     <img alt="UMT Logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Logo_Rasmi_UMT.png/1599px-Logo_Rasmi_UMT.png?20180522033258">
                     <br><br>
-                    <input type="text" placeholder="Username" class="form-control" id="usernamame" name="username" >
+                    <input type="text" placeholder="Username" class="form-control" id="username" name="username" >
                     <input type="password" placeholder="Password" class="form-control" id="password" name="password">
 
                     <input type="hidden" name="action" value="login">
                     <input type="submit" value="Login" class="btn">
 
-                    <p>Didn't have an account? <a href="signup.jsp">Sign Up</a></p>
+                    <p>Didn't have an account? <a href="/signup">Sign Up</a></p>
                 </form>
 
                 <input type="hidden" id="errorMessage" value="${errorMessage}">

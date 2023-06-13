@@ -1,6 +1,7 @@
 package com.citawarisan.controller;
 
 import com.citawarisan.dao.UserDao;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -8,19 +9,18 @@ import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+
 import com.citawarisan.model.User;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-//since we have web.xml do we still need this annotation???
-//@WebServlet(name = "UserController", urlPatterns = {"/UserController"})
-public class UserController extends HttpServlet {
-
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, SQLException, ClassNotFoundException {
-
+// it's the opposite, if you have no reason to use web.xml don't use it
+@WebServlet(urlPatterns = {"/login", "/signup"})
+public class AuthController extends HttpServlet {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, ClassNotFoundException {
         String action = request.getParameter("action");
 
         if (action != null) {
@@ -49,64 +49,42 @@ public class UserController extends HttpServlet {
                     break;
             }
         } else {
-            response.sendRedirect(request.getContextPath() + "auth/login.jsp");
+
         }
 
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println(request.getRequestURI()); // debug
+
+        // url path decide where to go next
+        String destination;
+        switch (request.getRequestURI()) {
+            case "/signup":
+                destination = "/auth/signup.jsp";
+                break;
+            case "/login":
+            default:
+                destination = "/auth/login.jsp";
+        }
+
+        request.getRequestDispatcher(destination).forward(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("enter");
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AuthController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AuthController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
-    private void saveUser(HttpServletRequest req, HttpServletResponse resp)
-            throws SQLException, ServletException, IOException, ClassNotFoundException {
+    private void saveUser(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException, ClassNotFoundException {
 
         //get all data from signup
         String username = req.getParameter("username");
@@ -176,7 +154,7 @@ public class UserController extends HttpServlet {
     }
 
     private void updateUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException, ClassNotFoundException {
-        
+
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String name = request.getParameter("name");
@@ -190,22 +168,23 @@ public class UserController extends HttpServlet {
         user.setName(name);
         user.setPhone(phone);
         user.setEmail(email);
-        
+
         // we can do anything with user object coming back here, but idk for now(sendRedirect)
         new UserDao().update(user);
 
 //        HttpSession session = request.getSession();
 //        session.setAttribute("user", user);
-        System.out.println(user.toString());
+        System.out.println(user);
         response.sendRedirect("dashboard.jsp");
     }
-     private void showUpdatForm(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException, ClassNotFoundException {
-         String username = (String)request.getSession().getAttribute("user");
-         System.out.println(username);
-        
+
+    private void showUpdatForm(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException, ClassNotFoundException {
+        String username = (String) request.getSession().getAttribute("user");
+        System.out.println(username);
+
         User user = new UserDao().retrieveUserByUserId(username);
-         System.out.println(user.toString());
-        RequestDispatcher rd =  request.getRequestDispatcher("auth/userProfile.jsp");
+        System.out.println(user.toString());
+        RequestDispatcher rd = request.getRequestDispatcher("auth/userProfile.jsp");
 
         request.setAttribute("user", user);
         rd.forward(request, response);
