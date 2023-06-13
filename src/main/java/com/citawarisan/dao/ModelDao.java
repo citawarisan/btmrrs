@@ -11,7 +11,7 @@ import java.util.List;
 
 public abstract class ModelDao<T> {
 
-    protected final Connection connection;
+    protected Connection connection;
 
     public ModelDao() {
         this.connection = DBConnection.getConnection();
