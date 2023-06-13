@@ -3,10 +3,13 @@ package com.citawarisan.controller;
 import com.citawarisan.dao.UserDao;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 
+import com.citawarisan.model.CourseInformation;
 import com.citawarisan.model.User;
 import com.citawarisan.util.DBConnection;
 
@@ -202,5 +205,15 @@ public class UserController extends HttpServlet {
         HttpSession sess = req.getSession();
         sess.removeAttribute("user");
         System.out.println("Session user: " + sess.getAttribute("user"));
+    }
+
+    private void displayList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        List<CourseInformation> ci = new UserDao().displaySchedule();
+
+        RequestDispatcher rd = req.getRequestDispatcher("studentDisplay.jsp");
+        req.setAttribute("errorMessage", "false");
+        req.setAttribute("studentInfo", ci);
+
+        rd.forward(req, resp);
     }
 }
