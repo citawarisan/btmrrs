@@ -74,7 +74,7 @@
 
 
             /*ending of admin css =========================================================*/
-           
+
         </style>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -120,7 +120,7 @@
                 this is the admin side
             </div>
         </div>
-                        <%@include file="comp/footer.jsp" %>
+        <%@include file="comp/footer.jsp" %>
     </body>
     <script>
         $(document).ready(function () {
