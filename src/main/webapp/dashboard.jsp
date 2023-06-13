@@ -1,3 +1,8 @@
+<%@page import="com.citawarisan.model.Room"%>
+<%@page import="com.citawarisan.model.Reservation"%>
+<%@page import="com.citawarisan.model.Faculty"%>
+<%@page import="com.citawarisan.model.Course"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%
     if (session.getAttribute("user") == null)
@@ -95,25 +100,37 @@
                     <p>Subject</p>
                     <hr>
                     <div class="subjects">
+                        <% List<Course> courses = (List<Course>) request.getAttribute("courses"); %>
+
+                        <% for (Course course : courses) {%>
                         <div class="subcode">
-                            <p>CSF0202</p>
+                            <p><%=course.getCourseCode()%></p>
                         </div>
-                        <div class="subcode">
-                            <p>CSF0202</p>
-                        </div>
+                        <% }%>
                     </div>
+
                 </div>
                 <div class="main-side-right">
                     <p>Reserved Rooms</p>
                     <hr>
+                    <%
+                        List<Faculty> f = (List<Faculty>)request.getAttribute("f");
+                        List<Reservation> rs = (List<Reservation>)request.getAttribute("rs");
+                        List<Room> r = (List<Room>)request.getAttribute("r");
+
+                        for(int i = 0; i < rs.size(); i++){
+                        %>
                     <div class="roomdesc">
                         <%-- fix this shit, how to add packages --%>
-
-                        <p>something</p>
+                        
+                        <p class="facultyroom"><b><%= f.get(i).getFacultyName() %>-<%= r.get(i).getRoomName() %></b></p>
+                        <p class="date">Time: <%= rs.get(i).getStartDateTime().toLocalTime() %>-<%= rs.get(i).getEndDateTime().toLocalTime() %></p>
+                        <p class="time">Date: <%= rs.get(i).getStartDateTime().toLocalDate() %></p>
+                        <p class="status">Status: <%= rs.get(i).getStatus() %></p>
+                        <a href="UserController?action=deleteReserve&rsid='<%= rs.get(i).getId() %>'">Delete</a> <a href="UserController?action=update&rsid='<%= rs.get(i).getId() %>'">Update</a>
                     </div>
-                    <div class="roomdesc">
-                        <p>something</p>
-                    </div>
+                        <%}%>
+                    
                 </div>
             </div>
             <div class="adminSide">
