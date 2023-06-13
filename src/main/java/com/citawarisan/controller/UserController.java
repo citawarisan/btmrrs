@@ -9,8 +9,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 
-import com.citawarisan.model.CourseInformation;
-import com.citawarisan.model.User;
+import com.citawarisan.model.*;
 import com.citawarisan.util.DBConnection;
 
 import javax.servlet.http.HttpServlet;
@@ -215,5 +214,36 @@ public class UserController extends HttpServlet {
         req.setAttribute("studentInfo", ci);
 
         rd.forward(req, resp);
+    }
+
+    private void deleteReserve(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException, ClassNotFoundException {
+
+        int id = Integer.parseInt(request.getParameter("rsid"));
+
+        UserDao userDAO = new UserDao();
+
+        userDAO.deleteReservation(id);
+        RequestDispatcher rd = request.getRequestDispatcher("UserController");
+        request.setAttribute("action", "regenerate");
+        rd.forward(request, response);
+
+    }
+
+    private void regenerate(HttpServletRequest req, HttpServletResponse res) throws SQLException, ServletException, IOException, ClassNotFoundException {
+        UserDao userDAO = new UserDao();
+        HttpSession session = req.getSession();
+        String user = (String) session.getAttribute("user");
+        RequestDispatcher rd = req.getRequestDispatcher("dashboard.jsp");
+        List<Course> c = userDAO.retrieveUserSubjects(user);
+        List<Faculty> f = userDAO.retrieveUserFaculties(user);
+        List<Room> r = userDAO.retrieveUserRooms(user);
+        List<Reservation> rs = userDAO.retrieveUserReservations(user);
+
+        req.setAttribute("f", f);
+        req.setAttribute("r", r);
+        req.setAttribute("rs", rs);
+        req.setAttribute("courses", c);
+        rd.forward(req, res);
+
     }
 }
