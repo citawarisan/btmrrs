@@ -61,7 +61,7 @@
                     border-radius: 40px;
                     cursor: pointer;
                     transition: 0.8s;
-                }
+                }}
 
                 .btn:hover {
                     transform: scale(0.96);
@@ -71,7 +71,7 @@
                         height: fit-content;
                         width: 100%;
 
-                    }
+                    }}
                 </style>
 
             </head>
