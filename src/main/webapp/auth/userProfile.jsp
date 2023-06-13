@@ -42,11 +42,10 @@
                 text-align: center;
             }
 
-            .container{
-
+            .container-usp{
+                padding: 5em;
+                margin: 5em;
                 background-color: rgba(255, 255, 255, 0.779);
-                margin: 5rem;
-                padding: 5rem;
                 border-radius: 30px;
 
                 .btn {
@@ -54,7 +53,7 @@
                     height: 50px;
                     display: block;
                     width: 20%;
-                    margin-top: 10px;
+                    margin-top: 25px;
                     margin-left: auto;
                     margin-right: auto;
                     background: rgb(75, 15, 145);
@@ -81,7 +80,7 @@
                 <jsp:include page="../comp/nav.jsp"/>
 
             <body>
-                <div class="container">
+                <div class="container-usp">
                     <div class="formname"><h1>User Profile</h1></div>
                     <form action="UserController" method="POST">
                         <div class="form-group">
