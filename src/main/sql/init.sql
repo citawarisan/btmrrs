@@ -27,6 +27,7 @@ CREATE TABLE Faculty
     faculty_id   INT PRIMARY KEY,
     faculty_name VARCHAR(255)
 );
+
 -- generic reservation
 CREATE TABLE Room
 (
@@ -45,6 +46,7 @@ CREATE TABLE Course
     number_of_students INT,
     exam_hours         INT DEFAULT 2
 );
+
 CREATE TABLE User_Courses
 (
 id                 INT PRIMARY KEY AUTO_INCREMENT,
@@ -52,7 +54,8 @@ course_code        VARCHAR(255) NOT NULL,
 user               VARCHAR(255) NOT NULL,
 FOREIGN KEY (course_code) REFERENCES Course(course_code),
 FOREIGN KEY (user) REFERENCES User(user)
-);  
+);
+
 CREATE TABLE Reservation
 (
     id             INT PRIMARY KEY AUTO_INCREMENT,

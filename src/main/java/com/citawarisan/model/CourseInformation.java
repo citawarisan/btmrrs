@@ -5,7 +5,6 @@
 package com.citawarisan.model;
 
 /**
- *
  * @author Omar Alomory(S63955)
  */
 public class CourseInformation {

@@ -1,21 +1,19 @@
 package com.citawarisan.controller;
 
 import com.citawarisan.dao.UserDao;
-
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.List;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-
 import com.citawarisan.model.*;
 import com.citawarisan.util.DBConnection;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
 
 // it's the opposite, if you have no reason to use web.xml don't use it
 @WebServlet(urlPatterns = {"/login", "/signup", "/logout", "/update"})

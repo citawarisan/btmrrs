@@ -50,7 +50,7 @@ public class UserDao {
                 user.setPhone(rs.getString("phone_number"));
                 System.out.println("User name is = " + rs.getString("user"));
             }
-            
+
             rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -62,7 +62,7 @@ public class UserDao {
     public List<User> getUsers() {
         List<User> userList = new ArrayList<>();
         String query = "SELECT * FROM User";
-        
+
         try (Connection conn = DBConnection.getConnection(); ResultSet rs = conn.createStatement().executeQuery(query)) {
             while (rs.next()) {
                 User user = new User();
@@ -84,7 +84,7 @@ public class UserDao {
     public User getUser(String username) {
         User user = null;
         String query = "SELECT * FROM User WHERE user=?";
-        
+
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
@@ -98,12 +98,12 @@ public class UserDao {
                 user.setEmail(rs.getString(5));
                 user.setPhone(rs.getString(6));
             }
-            
+
             rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
+
         return user;
     }
 
@@ -168,7 +168,7 @@ public class UserDao {
 
                 info.add(courseInformation);
             }
-            System.out.println("number of rows"+count);
+            System.out.println("number of rows" + count);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -242,7 +242,7 @@ public class UserDao {
                 room.setFaculty(rs.getInt("faculty"));
                 rooms.add(room);
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -276,6 +276,7 @@ public class UserDao {
         }
         return reservations;
     }
+
     public void deleteReservation(int id) {
 
         String myQ = "DELETE FROM reservation WHERE id = ?;";
