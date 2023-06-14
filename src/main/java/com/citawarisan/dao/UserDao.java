@@ -66,7 +66,7 @@ public class UserDao {
         try (Connection conn = DBConnection.getConnection(); ResultSet rs = conn.createStatement().executeQuery(query)) {
             while (rs.next()) {
                 User user = new User();
-                user.setUsername(rs.getString("username"));
+                user.setUsername(rs.getString("user"));
                 user.setPassword(rs.getString("password"));
                 user.setType(rs.getInt("type"));
                 user.setName(rs.getString("name"));
@@ -108,7 +108,7 @@ public class UserDao {
     }
 
     public boolean updateUser(User user) {
-        String query = "UPDATE User SET email=?, password=?, phone_number=?, name=? WHERE user=?";
+        String query = "UPDATE User SET email=?, password=?, phone_number=?, name=?, type=? WHERE user=?";
         boolean success = false;
 
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
@@ -119,7 +119,8 @@ public class UserDao {
             ps.setString(2, password);
             ps.setString(3, user.getPhone());
             ps.setString(4, user.getName());
-            ps.setString(5, user.getUsername());
+            ps.setString(6, user.getUsername());
+            ps.setInt(5, user.getType());
             ps.executeUpdate();
 
             success = true;
