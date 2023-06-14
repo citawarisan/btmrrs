@@ -65,9 +65,8 @@
             margin: 0;
         }
 
-        /* right styling */
         .main-side-right {
-            width: 70%;
+            width: 100%;
         }
 
     </style>
@@ -80,22 +79,24 @@
 
 <div class="containerBody">
     <div class="main-header staff">
-        <p>Reserved Rooms</p>
-        <hr>
-        <c:forEach var="r" items="${rs}">
-            <div class="roomdesc">
-                <p class="facultyroom"><b>${rs.room}</b></p>
-                <p class="date">Date: ${rs.date}</p>
-                <p class="time">Time: ${rs.time}</p>
-                <p class="status">Status: ${rs.status}</p>
+        <div class="main-side-right">
+            <p>Reserved Rooms</p>
+            <hr>
+            <c:forEach var="r" items="${rv.getList()}">
+                <div class="roomdesc">
+                    <p class="facultyroom"><b>${r.room}</b></p>
+                    <p class="date">Date: ${r.date}</p>
+                    <p class="time">Time: ${r.time}</p>
+                    <p class="status">Status: ${r.status}</p>
 
-                <c:set var="now" value="<%= LocalDateTime.now() %>" />
-                <c:if test="${r.date > now}">
-                    <a href="/book?id='${rs.id}'">Cancel</a>
-                    <a href="/revise?id='${rs.id}'">Update</a>
-                </c:if>
-            </div>
-        </c:forEach>
+                    <c:set var="now" value="<%= LocalDateTime.now() %>" />
+                    <c:if test="${r.date > now}">
+                        <a href="/book?id='${r.id}'">Cancel</a>
+                        <a href="/revise?id='${r.id}'">Update</a>
+                    </c:if>
+                </div>
+            </c:forEach>
+        </div>
     </div>
 </div>
 
