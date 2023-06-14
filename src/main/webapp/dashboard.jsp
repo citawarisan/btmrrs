@@ -1,8 +1,7 @@
-<%@page contentType="text/html" pageEncoding="UTF-8" import="com.citawarisan.model.*, java.util.List" %>
+<%@ page contentType="text/html" pageEncoding="UTF-8" import="java.time.LocalDateTime" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:useBean id="user" class="com.citawarisan.model.User" scope="session"/>
-<c:if test="${user == null}">
-    yes
-</c:if>
+<jsp:useBean id="rs" class="com.citawarisan.view.ReservationView" scope="session"/>
 
 <!DOCTYPE html>
 <html>
@@ -80,37 +79,23 @@
 <%@include file="comp/nav.jsp" %>
 
 <div class="containerBody">
-    <input type="hidden" id="type" name="userType" value="${user.type}"/>
-
     <div class="main-header staff">
-        <div class="main-side-right">
-            <p>Reserved Rooms</p>
-            <hr>
-            <%
-                List<Faculty> f = (List<Faculty>) request.getAttribute("f");
-                List<Reservation> rs = (List<Reservation>) request.getAttribute("rs");
-                List<Room> r = (List<Room>) request.getAttribute("r");
-
-                for (int i = 0; i < rs.size(); i++) {
-            %>
+        <p>Reserved Rooms</p>
+        <hr>
+        <c:forEach var="r" items="${rs}">
             <div class="roomdesc">
-                <%-- fix this shit, how to add packages --%>
+                <p class="facultyroom"><b>${rs.room}</b></p>
+                <p class="date">Date: ${rs.date}</p>
+                <p class="time">Time: ${rs.time}</p>
+                <p class="status">Status: ${rs.status}</p>
 
-                <p class="facultyroom"><b><%= f.get(i).getFacultyName() %>-<%= r.get(i).getRoomName() %>
-                </b></p>
-                <p class="date">Time: <%= rs.get(i).getStartDateTime().toLocalTime() %>
-                    -<%= rs.get(i).getEndDateTime().toLocalTime() %>
-                </p>
-                <p class="time">Date: <%= rs.get(i).getStartDateTime().toLocalDate() %>
-                </p>
-                <p class="status">Status: <%= rs.get(i).getStatus() %>
-                </p>
-                <a href="UserController?action=deleteReserve&rsid='<%= rs.get(i).getId() %>'">Delete</a> <a
-                    href="UserController?action=update&rsid='<%= rs.get(i).getId() %>'">Update</a>
+                <c:set var="now" value="<%= LocalDateTime.now() %>" />
+                <c:if test="${r.date > now}">
+                    <a href="/book?id='${rs.id}'">Cancel</a>
+                    <a href="/revise?id='${rs.id}'">Update</a>
+                </c:if>
             </div>
-            <%}%>
-
-        </div>
+        </c:forEach>
     </div>
 </div>
 
