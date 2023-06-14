@@ -11,9 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.List;
 
-@WebServlet(urlPatterns = {"/home", "/book"})
+@WebServlet(urlPatterns = {"/home", "/book", "/revise", "/cancel"})
 public class ReservationController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -31,8 +30,13 @@ public class ReservationController extends HttpServlet {
         String destination;
         switch (req.getRequestURI()) {
             case "/book":
-                destination = "/book.jsp";
+                destination = "/book/reserve.jsp";
                 break;
+            case "/revise":
+                destination = "/book/edit.jsp";
+                break;
+            case "/cancel":
+                cancelReservation(req);
             case "/home":
             default:
                 destination = "/dashboard.jsp";
@@ -53,13 +57,11 @@ public class ReservationController extends HttpServlet {
         resp.sendRedirect(destination);
     }
 
-    private void deleteReservation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("rsid"));
-
-        new ReservationDao().delete(id);
-        RequestDispatcher rd = request.getRequestDispatcher("UserController");
-        request.setAttribute("action", "regenerate");
-        rd.forward(request, response);
+    private void cancelReservation(HttpServletRequest req) {
+        int id = Integer.parseInt(req.getParameter("id"));
+        User user = (User) req.getSession().getAttribute("user");
+        boolean success = new ReservationDao().cancel(id, user);
+        System.out.println((success ? "Success" : "Failed") + " to cancel reservation"); // debug
     }
 
     private void reloadSessionAttributes(HttpServletRequest req) {

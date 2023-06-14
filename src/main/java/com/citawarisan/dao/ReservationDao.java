@@ -11,45 +11,46 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ReservationDao {
+
+    private void parseModel(Reservation r, ResultSet rs) throws SQLException {
+        r.setId(rs.getInt("id"));
+        r.setUser(rs.getString("user"));
+        r.setStartDateTime(rs.getTimestamp("start_datetime").toLocalDateTime());
+        r.setEndDateTime(rs.getTimestamp("end_datetime").toLocalDateTime());
+        r.setRoom(rs.getString("room"));
+        r.setSeats(rs.getInt("seats"));
+        r.setStatus(rs.getString("status"));
+        r.setDetails(rs.getString("details"));
+    }
+
+    private void parseStatement(Reservation r, PreparedStatement ps) throws SQLException {
+        ps.setString(1, r.getUser());
+        ps.setString(2, r.getRoom());
+        ps.setInt(3, r.getSeats());
+        ps.setTimestamp(4, Timestamp.valueOf(r.getStartDateTime()));
+        ps.setTimestamp(5, Timestamp.valueOf(r.getEndDateTime()));
+        ps.setString(6, r.getDetails());
+        ps.setString(7, r.getStatus());
+    }
+
     protected List<Reservation> parseModels(ResultSet rs) throws SQLException {
         List<Reservation> reservations = new ArrayList<>();
 
         while (rs.next()) {
             Reservation reservation = new Reservation();
-            reservation.setId(rs.getInt("id"));
-            reservation.setUser(rs.getString("user"));
-            reservation.setStartDateTime(rs.getTimestamp("start_datetime").toLocalDateTime());
-            reservation.setEndDateTime(rs.getTimestamp("end_datetime").toLocalDateTime());
-            reservation.setRoom(rs.getString("room"));
-            reservation.setSeats(rs.getInt("seats"));
-            reservation.setStatus(rs.getString("status"));
-            reservation.setDetails(rs.getString("details"));
+            parseModel(reservation, rs);
             reservations.add(reservation);
         }
         rs.close();
-        
+
         return reservations;
     }
 
-    protected PreparedStatement parseQuery(String query, Reservation reservation) throws SQLException {
-        try (Connection conn = DBConnection.getConnection()) {
-            PreparedStatement ps = conn.prepareStatement(query);
-            ps.setString(1, reservation.getUser());
-            ps.setString(2, reservation.getRoom());
-            ps.setInt(3, reservation.getSeats());
-            ps.setTimestamp(4, Timestamp.valueOf(reservation.getStartDateTime()));
-            ps.setTimestamp(5, Timestamp.valueOf(reservation.getEndDateTime()));
-            ps.setString(6, reservation.getDetails());
-            ps.setString(7, reservation.getStatus());
-            return ps;
-        } 
-    }
-
-    public boolean create(Reservation reservation) {
-        try {
-            String query = "INSERT INTO Reservation VALUE (?, ?, ?, ?, ?, ?, ?)";
-            parseQuery(query, reservation).execute();
-
+    public boolean create(Reservation r) {
+        String query = "INSERT INTO Reservation (user, room, seats, start_datetime, end_datetime, details, status) VALUE (?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
+            parseStatement(r, ps);
+            ps.execute();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -71,6 +72,25 @@ public class ReservationDao {
         return null;
     }
 
+    public Reservation read(int id) {
+        String query = "SELECT * FROM Reservation WHERE id = ?";
+        Reservation r = null;
+
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                r = new Reservation();
+                parseModel(r, rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return r;
+    }
+
     // select by username
     public List<Reservation> read(String username) {
         try (Connection conn = DBConnection.getConnection()) {
@@ -89,16 +109,16 @@ public class ReservationDao {
     }
 
     public ReservationView readV(String username) {
-        ReservationView rv = null;
-        ReservationView.flush();
-
-        String query = "SELECT * FROM Reservation_View WHERE user = ?";
+        String query = "SELECT * FROM Reservation_View WHERE user = ? ORDER BY id DESC LIMIT 5;";
         try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, username);
 
             ResultSet rs = ps.executeQuery();
 
+            // convoluted scam
+            ReservationView rv = new ReservationView();
+            List<ReservationView> rvs = new ArrayList<>();
             while (rs.next()) {
                 rv = new ReservationView();
                 rv.setId(rs.getInt("id"));
@@ -108,21 +128,23 @@ public class ReservationDao {
                 rv.setRoom(rs.getString("room"));
                 rv.setStatus(rs.getString("status"));
                 rv.setDetails(rs.getString("details"));
-                rv.add();
+                rvs.add(rv);
             }
             rs.close();
+
+            rv.setList(rvs);
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return rv;
+        return new ReservationView();
     }
 
-    public boolean update(Reservation reservation) {
-        try {
-            String query = "UPDATE Reservation SET user = ?, room = ?, seats = ?, start_datetime = ?, end_datetime = ?, details = ?, status = ? WHERE id = ?";
-            PreparedStatement ps = parseQuery(query, reservation);
-            ps.setInt(8, reservation.getId());
+    public boolean update(Reservation r) {
+        String query = "UPDATE Reservation SET user = ?, room = ?, seats = ?, start_datetime = ?, end_datetime = ?, details = ?, status = ? WHERE id = ?";
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
+            parseStatement(r, ps);
+            ps.setInt(8, r.getId());
             ps.executeUpdate();
 
             return true;
@@ -135,8 +157,7 @@ public class ReservationDao {
 
     public boolean delete(int id) {
         String query = "DELETE FROM Reservation WHERE id = ?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(query)) {
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, id);
             ps.execute();
 
@@ -148,19 +169,26 @@ public class ReservationDao {
         return false;
     }
 
+    public boolean cancel(int id, User user) {
+        Reservation r = read(id);
+        if (r == null) {
+            System.out.println("Reservation not found");
+            return false;
+        }
+
+        if (user.getType() != 1 && !r.getUser().equals(user.getUsername())) {
+            System.out.println("Illegal attempt to cancel reservation");
+            return false;
+        }
+
+        r.setStatus("Cancelled");
+        return update(r);
+    }
+
     public List<CourseInformation> displaySchedule() {
         List<CourseInformation> info = new ArrayList<>();
         try (Connection conn = DBConnection.getConnection()) {
-            ResultSet rs = conn.createStatement().executeQuery(
-                    "SELECT c.course_code, c.course_name, u.name AS user_name, c.number_of_students, "
-                            + "DATE(r.start_datetime) AS date, DAYNAME(r.start_datetime) AS day, "
-                            + "c.exam_hours AS number_of_hours, TIME_FORMAT(r.start_datetime, '%H:%i') "
-                            + "AS start_time, TIME_FORMAT(r.end_datetime, '%H:%i') AS end_time, f.faculty_name, rm.room_name FROM Course c JOIN User_Courses uc ON c.course_code = uc.course_code "
-                            + "JOIN Reservation r ON uc.user = r.user "
-                            + "JOIN Room rm ON r.room = rm.room_id "
-                            + "JOIN Faculty f ON rm.faculty = f.faculty_id "
-                            + "JOIN User u ON uc.user = u.user "
-                            + "WHERE u.type = 2 ORDER BY c.course_code");
+            ResultSet rs = conn.createStatement().executeQuery("SELECT c.course_code, c.course_name, u.name AS user_name, c.number_of_students, " + "DATE(r.start_datetime) AS date, DAYNAME(r.start_datetime) AS day, " + "c.exam_hours AS number_of_hours, TIME_FORMAT(r.start_datetime, '%H:%i') " + "AS start_time, TIME_FORMAT(r.end_datetime, '%H:%i') AS end_time, f.faculty_name, rm.room_name FROM Course c JOIN User_Courses uc ON c.course_code = uc.course_code " + "JOIN Reservation r ON uc.user = r.user " + "JOIN Room rm ON r.room = rm.room_id " + "JOIN Faculty f ON rm.faculty = f.faculty_id " + "JOIN User u ON uc.user = u.user " + "WHERE u.type = 2 ORDER BY c.course_code");
             int count = 0;
             while (rs.next()) {
                 count++;
@@ -189,14 +217,9 @@ public class ReservationDao {
 
     public List<Course> getUserCourses(String username) {
         List<Course> c = new ArrayList<>();
-        String myQ = "SELECT c.course_code, c.course_name, c.group_number, c.number_of_students, c.exam_hours "
-                + "FROM course c "
-                + "JOIN user_courses i ON c.course_code = i.course_code "
-                + "JOIN user u ON u.user = i.user "
-                + "WHERE u.user = ?";
+        String myQ = "SELECT c.course_code, c.course_name, c.group_number, c.number_of_students, c.exam_hours " + "FROM course c " + "JOIN user_courses i ON c.course_code = i.course_code " + "JOIN user u ON u.user = i.user " + "WHERE u.user = ?";
         try (Connection conn = DBConnection.getConnection()) {
-            PreparedStatement myPS = DBConnection.getConnection()
-                    .prepareStatement(myQ);
+            PreparedStatement myPS = DBConnection.getConnection().prepareStatement(myQ);
             myPS.setString(1, username);
 
             ResultSet rs = myPS.executeQuery();
@@ -271,7 +294,6 @@ public class ReservationDao {
         } catch (SQLException ex) {
             Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 }
 

@@ -80,7 +80,7 @@
 <div class="containerBody">
     <div class="main-header staff">
         <div class="main-side-right">
-            <p>Reserved Rooms</p>
+            <p>Latest Reservations</p>
             <hr>
             <c:forEach var="r" items="${rv.getList()}">
                 <div class="roomdesc">
@@ -90,9 +90,9 @@
                     <p class="status">Status: ${r.status}</p>
 
                     <c:set var="now" value="<%= LocalDateTime.now() %>" />
-                    <c:if test="${r.date > now}">
-                        <a href="/book?action=cancel&id='${r.id}'">Cancel</a>
-                        <a href="/book?action=update&id='${r.id}'">Update</a>
+                    <c:if test="${r.status != 'cancelled' && r.date > now}">
+                        <a href="/cancel?id=${r.id}">Cancel</a>
+                        <a href="/revise?id=${r.id}">Update</a>
                     </c:if>
                 </div>
             </c:forEach>
