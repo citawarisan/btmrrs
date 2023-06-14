@@ -39,8 +39,8 @@ CREATE TABLE Room
 CREATE TABLE Reservation
 (
     id             INT PRIMARY KEY AUTO_INCREMENT,
-    user           VARCHAR(255) UNIQUE,
-    room           VARCHAR(255) UNIQUE,
+    user           VARCHAR(255),
+    room           VARCHAR(255),
     seats          INT,
     start_datetime DATETIME,
     end_datetime   DATETIME,
