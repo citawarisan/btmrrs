@@ -9,6 +9,15 @@ public class Room {
     private int roomSize;
     private int faculty;
 
+    public Room(String roomId, String roomName, int roomSize, int faculty) {
+        this.roomId = roomId;
+        this.roomName = roomName;
+        this.roomSize = roomSize;
+        this.faculty = faculty;
+    }
+
+    public Room() {}
+
     public String getRoomId() {
         return roomId;
     }

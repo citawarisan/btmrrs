@@ -27,8 +27,8 @@ public class ReservationView {
         this.user = user;
     }
 
-    public LocalDate getDate() {
-        return date.toLocalDate();
+    public LocalDateTime getDate() {
+        return date;
     }
 
     public void setDate(LocalDateTime date) {

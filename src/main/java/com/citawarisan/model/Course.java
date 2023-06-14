@@ -14,6 +14,16 @@ public class Course {
     private int numberOfStudents;
     private int examHours;
 
+    public Course(String courseCode, String courseName, int groupNumber, int numberOfStudents, int examHours) {
+        this.courseCode = courseCode;
+        this.courseName = courseName;
+        this.groupNumber = groupNumber;
+        this.numberOfStudents = numberOfStudents;
+        this.examHours = examHours;
+    }
+
+    public Course() {}
+
     public String getCourseCode() {
         return courseCode;
     }

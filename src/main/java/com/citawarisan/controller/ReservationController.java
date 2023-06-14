@@ -2,6 +2,7 @@ package com.citawarisan.controller;
 
 import com.citawarisan.dao.ReservationDao;
 import com.citawarisan.model.*;
+import com.citawarisan.util.ModelChronos;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @WebServlet(urlPatterns = {"/home", "/book", "/revise", "/cancel"})
 public class ReservationController extends HttpServlet {
@@ -33,6 +36,15 @@ public class ReservationController extends HttpServlet {
                 destination = "/book/reserve.jsp";
                 break;
             case "/revise":
+                Reservation r = new ReservationDao().read(Integer.parseInt(req.getParameter("id")));
+                if (r == null) {
+                    System.out.println("Failed to read reservation"); // debug
+                    resp.sendRedirect("/home");
+                    return;
+                }
+                req.setAttribute("r", r);
+                ModelChronos c = new ModelChronos(r.getUser());
+                req.setAttribute("c", c);
                 destination = "/book/edit.jsp";
                 break;
             case "/cancel":
@@ -77,7 +89,17 @@ public class ReservationController extends HttpServlet {
     }
 
     private boolean editReservation(HttpServletRequest req) {
-        return false;
+        // get reservation data, then create object with it
+        int id = Integer.parseInt(req.getParameter("id"));
+        LocalDateTime startDateTime = LocalDateTime.parse(req.getParameter("start_datetime"));
+        LocalDateTime endDateTime = LocalDateTime.parse(req.getParameter("end_datetime"));
+        String room = req.getParameter("room");
+        String user = req.getParameter("user");
+        int seats = Integer.parseInt(req.getParameter("seats"));
+        String details = req.getParameter("course");
+        Reservation r = new Reservation(id, startDateTime, endDateTime, user, room, seats, "success", details);
+        new ReservationDao().update(r);
+        return true;
     }
 
     private boolean cancelReservation(HttpServletRequest req) {

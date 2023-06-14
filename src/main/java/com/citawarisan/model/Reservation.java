@@ -11,6 +11,19 @@ public class Reservation {
     private String status;
     private String details;
 
+    public Reservation(int id, LocalDateTime startDateTime, LocalDateTime endDateTime, String user, String room, int seats, String status, String details) {
+        this.id = id;
+        this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
+        this.user = user;
+        this.room = room;
+        this.seats = seats;
+        this.status = status;
+        this.details = details;
+    }
+
+    public Reservation() {}
+
     public int getId() {
         return id;
     }

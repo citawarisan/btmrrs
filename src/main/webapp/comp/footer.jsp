@@ -1,10 +1,3 @@
-<%-- 
-    Document   : footer
-    Created on : Jun 12, 2023, 7:18:02 PM
-    Author     : Omar Alomory(S63955)
---%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
 <style>
     /* footer goes here -------------------------------------------------------------*/
     .footer {
