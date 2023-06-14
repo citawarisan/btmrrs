@@ -30,7 +30,7 @@ public class HomeController extends HttpServlet {
                     System.out.println("Unauthorized access to /home"); // debug
                     return;
                 }
-                regenerate(req);
+                reloadSessionAttributes(req);
             default:
                 destination = "/dashboard.jsp";
         }
@@ -69,17 +69,9 @@ public class HomeController extends HttpServlet {
         rd.forward(request, response);
     }
 
-    private void regenerate(HttpServletRequest req) {
+    private void reloadSessionAttributes(HttpServletRequest req) {
         HttpSession sess = req.getSession();
         String username = ((User) sess.getAttribute("user")).getUsername();
-
-        ReservationDao dao = new ReservationDao();
-        List<Faculty> f = dao.getUserFaculties(username);
-        List<Room> r = dao.getUserRooms(username);
-        List<Reservation> rs = dao.read(username);
-
-        req.setAttribute("f", f);
-        req.setAttribute("r", r);
-        req.setAttribute("rs", rs);
+        sess.setAttribute("rv", new ReservationDao().readV(username));
     }
 }
