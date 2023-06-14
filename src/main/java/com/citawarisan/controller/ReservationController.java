@@ -54,16 +54,40 @@ public class ReservationController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         System.out.println("POST " + req.getRequestURI()); // debug
 
+        // url path decide where to go next
         String destination = "/home";
-        System.out.println("What the heck? Redirecting to " + destination); // debug
+        switch (req.getRequestURI()) {
+            case "/revise":
+                if (!editReservation(req)) {
+                    destination = "/book";
+                }
+                break;
+            case "/book":
+                if (!createReservation(req)) {
+                    destination = "/book";
+                }
+        }
+
+        System.out.println("Redirecting to " + destination); // debug
         resp.sendRedirect(destination);
     }
 
-    private void cancelReservation(HttpServletRequest req) {
+    private boolean createReservation(HttpServletRequest req) {
+//        sess.setAttribute("error", "Failed to create reservation");
+//        System.out.println("Failed to create reservation"); // debug
+        return false;
+    }
+
+    private boolean editReservation(HttpServletRequest req) {
+        return false;
+    }
+
+    private boolean cancelReservation(HttpServletRequest req) {
         int id = Integer.parseInt(req.getParameter("id"));
         User user = (User) req.getSession().getAttribute("user");
-        boolean success = new ReservationDao().cancel(id, user);
-        System.out.println((success ? "Success" : "Failed") + " to cancel reservation"); // debug
+        boolean s = new ReservationDao().cancel(id, user);
+        System.out.println((s ? "Success" : "Failed") + " to cancel reservation"); // debug
+        return s;
     }
 
     private void reloadSessionAttributes(HttpServletRequest req) {
