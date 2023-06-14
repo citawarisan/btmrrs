@@ -18,7 +18,7 @@
 <body>
 <%@include file="../comp/nav.jsp" %>
     
-    <div class="reserveBody">
+<div class="reserveBody">
         <div class="reserveContent row">
             <div class="contentLeft contentAll ">
                 <div class="form">
