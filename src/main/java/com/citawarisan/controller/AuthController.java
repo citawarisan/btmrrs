@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet(urlPatterns = {"/login", "/signup", "/logout", "/update"})
 public class AuthController extends HttpServlet {
@@ -91,26 +90,9 @@ public class AuthController extends HttpServlet {
         resp.sendRedirect(destination);
     }
 
-    private void editUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ClassNotFoundException {
-        String username = (String) request.getSession().getAttribute("user");
-        System.out.println(username);
-
-        User user = new UserDao().getUser(username);
-        System.out.println(user.toString());
-        RequestDispatcher rd = request.getRequestDispatcher("auth/edit.jsp");
-
-        request.setAttribute("user", user);
-        rd.forward(request, response);
-    }
-
     private void nukeUser(HttpServletRequest req) {
         String username = req.getParameter("username");
-
-        // blame Gary
-        User user = new User();
-        user.setUsername(username);
-
-        new UserDao().delete(user);
+        new UserDao().deleteUser(username);
 
         HttpSession session = req.getSession();
         session.invalidate();
@@ -138,27 +120,6 @@ public class AuthController extends HttpServlet {
         if (success) {
             HttpSession sess = req.getSession();
             sess.setAttribute("user", user);
-        }
-
-        return success;
-    }
-
-    private boolean login(HttpServletRequest req) {
-        String username = req.getParameter("username");
-        String password = req.getParameter("password");
-
-        // check if user exists
-        UserDao userDAO = new UserDao();
-        User user = userDAO.matchUser(username, password);
-        boolean success = user != null;
-
-        HttpSession sess = req.getSession();
-        sess.setAttribute("errorMessage", String.valueOf(success));
-        if (success) {
-            sess.setAttribute("user", user);
-            System.out.println("Session user: " + sess.getAttribute("user"));
-        } else {
-            sess.setAttribute("error", "Invalid username or password!");
         }
 
         return success;
@@ -192,6 +153,27 @@ public class AuthController extends HttpServlet {
             //save the bean as attribute and pass to view
             sess.setAttribute("user", user);
             System.out.println("Session user: " + sess.getAttribute("user"));
+        }
+
+        return success;
+    }
+
+    private boolean login(HttpServletRequest req) {
+        String username = req.getParameter("username");
+        String password = req.getParameter("password");
+
+        // check if user exists
+        UserDao userDAO = new UserDao();
+        User user = userDAO.matchUser(username, password);
+        boolean success = user != null;
+
+        HttpSession sess = req.getSession();
+        sess.setAttribute("errorMessage", String.valueOf(success));
+        if (success) {
+            sess.setAttribute("user", user);
+            System.out.println("Session user: " + sess.getAttribute("user"));
+        } else {
+            sess.setAttribute("error", "Invalid username or password!");
         }
 
         return success;
