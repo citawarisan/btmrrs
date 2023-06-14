@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@WebServlet(urlPatterns = {"/home", "/book", "/revise", "/cancel"})
+@WebServlet(urlPatterns = {"/home", "/book", "/revise", "/cancel","/approve"})
 public class ReservationController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -36,6 +36,10 @@ public class ReservationController extends HttpServlet {
                 String username = ((User) sess.getAttribute("user")).getUsername();
                 req.setAttribute("c", new ModelChronos(username));
                 destination = "/book/make.jsp";
+                break;
+              case "/approve":
+               approveReservation(req);
+                destination = "/home";
                 break;
             case "/revise":
                 Reservation r = new ReservationDao().read(Integer.parseInt(req.getParameter("id")));
@@ -208,6 +212,13 @@ public class ReservationController extends HttpServlet {
         System.out.println((s ? "Success" : "Failed") + " to cancel reservation"); // debug
         return s;
     }
+    private boolean approveReservation(HttpServletRequest req) {
+        int id = Integer.parseInt(req.getParameter("id"));
+        User user = (User) req.getSession().getAttribute("user");
+        boolean s = new ReservationDao().approve(id, user);
+        System.out.println((s ? "Success" : "Failed") + " to approve reservation"); // debug
+        return s;
+    }
 
     private void reloadSessionAttributes(HttpServletRequest req) {
         HttpSession sess = req.getSession();
@@ -225,5 +236,14 @@ public class ReservationController extends HttpServlet {
         req.setAttribute("rs", rs);
         req.setAttribute("r", r);
         session.setAttribute("error", null);
+    }
+  private void generateReservationAdmin(HttpServletRequest req) throws ServletException, IOException {
+        HttpSession session = req.getSession();
+        String username = ((User) session.getAttribute("user")).getUsername();
+
+        List<Reservation> rs =  new ReservationDao().read();
+        req.setAttribute("rs", rs);
+
+
     }
 }
