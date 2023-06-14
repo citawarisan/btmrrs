@@ -24,17 +24,17 @@
         <header class="p-3  border-bottom">
             <div class="container">
                 <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                    <a href="dashboard.jsp"
+                    <a href="/home"
                        class="d-flex align-items-center mb-2 mb-lg-0 link-body-emphasis text-decoration-none">
                         <img class="bi me-2" width="120" height="80" role="img" aria-label="Bootstrap"
                              src="https://upload.wikimedia.org/wikipedia/commons/3/3e/Logo_Rasmi_UMT.png">
                     </a>
 
                     <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                        <li><a href="../dashboard.jsp" class="nav-link px-2 link-body-emphasis">Dashboard</a></li>
-                        <li><a href="../reserve.jsp" class="nav-link px-2 link-body-emphasis">Reserve</a></li>
-                        <li><a href="../about.jsp" class="nav-link px-2 link-body-emphasis">About-us</a></li>
-                        <li><a href="../help.jsp" class="nav-link px-2 link-body-emphasis">Help</a></li>
+                        <li><a href="/home" class="nav-link px-2 link-body-emphasis">Dashboard</a></li>
+                        <li><a href="/reserve.jsp" class="nav-link px-2 link-body-emphasis">Reserve</a></li>
+                        <li><a href="/about.jsp" class="nav-link px-2 link-body-emphasis">About-us</a></li>
+                        <li><a href="/help.jsp" class="nav-link px-2 link-body-emphasis">Help</a></li>
                     </ul>
 
 
