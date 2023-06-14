@@ -89,7 +89,7 @@
     </style>
 </head>
 <body>
-<%@include file="comp/nav.jsp" %>
+<%@include file="../comp/nav.jsp" %>
 <div class="container">
     <div class="info">
         <a>HELP</a>
@@ -105,6 +105,6 @@
                 referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
 </div>
-<%@include file="comp/footer.jsp" %>
+<%@include file="../comp/footer.jsp" %>
 </body>
 </html>

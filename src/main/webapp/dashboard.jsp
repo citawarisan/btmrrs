@@ -91,8 +91,8 @@
 
                     <c:set var="now" value="<%= LocalDateTime.now() %>" />
                     <c:if test="${r.date > now}">
-                        <a href="/book?id='${r.id}'">Cancel</a>
-                        <a href="/revise?id='${r.id}'">Update</a>
+                        <a href="/book?action=cancel&id='${r.id}'">Cancel</a>
+                        <a href="/book?action=update&id='${r.id}'">Update</a>
                     </c:if>
                 </div>
             </c:forEach>

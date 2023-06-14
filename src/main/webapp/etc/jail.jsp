@@ -43,7 +43,7 @@
     </style>
 </head>
 <body>
-<%@include file="comp/nav.jsp" %>
+<%@include file="../comp/nav.jsp" %>
 
 <div class="table-container">
     <div class="table-title"><h1>Course Information</h1></div>
@@ -90,7 +90,7 @@
     </div>
 </div>
 
-<%@include file="comp/footer.jsp" %>
+<%@include file="../comp/footer.jsp" %>
 </body>
 </html>
 

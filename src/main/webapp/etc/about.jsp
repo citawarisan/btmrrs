@@ -122,7 +122,7 @@
     </style>
 </head>
 <body>
-<%@include file="comp/nav.jsp" %>
+<%@include file="../comp/nav.jsp" %>
 <div class="container">
     <div class="info">
         <div
@@ -147,7 +147,7 @@
             <h2 class="head-of-profile" style="text-align: center">Profile Card</h2>
 
             <div class="card">
-                <img src="images/Omar.png" alt="Omar" style="width: 100%"/>
+                <img src="../images/Omar.png" alt="Omar" style="width: 100%"/>
                 <h1>OMAR ALOMORY</h1>
                 <p class="title">Programmer</p>
                 <p>UMT</p>
@@ -164,7 +164,7 @@
             <h2 class="head-of-profile" style="text-align: center">Profile Card</h2>
 
             <div class="card">
-                <img src="images/Azim.jpg" alt="Azim" style="width: 100%"/>
+                <img src="../images/Azim.jpg" alt="Azim" style="width: 100%"/>
                 <h1>ABDUL AZIM</h1>
                 <p class="title">Designer</p>
                 <p>UMT</p>
@@ -183,7 +183,7 @@
 
             <div class="card">
                 <img
-                        src="images/Gary.jpg" alt="Gary" style="width: 100%"/>
+                        src="../images/Gary.jpg" alt="Gary" style="width: 100%"/>
                 <h1>GARY LIM</h1>
                 <p class="title">The Janitor</p>
                 <p>UMT</p>
@@ -198,6 +198,6 @@
         </div>
     </div>
 </div>
-<%@include file="comp/footer.jsp" %>
+<%@include file="../comp/footer.jsp" %>
 </body>
 </html>

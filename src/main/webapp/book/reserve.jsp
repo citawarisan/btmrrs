@@ -70,7 +70,7 @@
 </head>
 <body>
 
-    <%@include file="comp/nav.jsp" %>
+    <%@include file="../comp/nav.jsp" %>
     <div class="reserveBody row">
         <div class="reserveContent">
             <div class="contentLeft contentAll">
@@ -125,7 +125,7 @@
             </div>
         </div>
     </div>
-    <%@include file="comp/footer.jsp" %> 
+    <%@include file="../comp/footer.jsp" %>
 
    <script>
     document.addEventListener('DOMContentLoaded', function() {

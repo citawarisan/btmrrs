@@ -107,8 +107,8 @@
                 <a href="mailto:faizah_aplop@umt.edu.my;"><b>DR. FAIZAH BINTI APLOP</b></a>
             </div>
             <div>
-                <a href="support.jsp"><b>SUPPORT</b></a>
-                <a href="about.jsp"><b>ABOUT-US</b></a>
+                <a href="../etc/support.jsp"><b>SUPPORT</b></a>
+                <a href="../etc/about.jsp"><b>ABOUT-US</b></a>
                 <a href="#faq.jsp"><b>FAQ</b></a>
             </div>
         </div>
