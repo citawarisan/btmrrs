@@ -33,8 +33,8 @@
                     <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                         <li><a href="../dashboard.jsp" class="nav-link px-2 link-body-emphasis">Dashboard</a></li>
                         <li><a href="../reserve.jsp" class="nav-link px-2 link-body-emphasis">Reserve</a></li>
-                        <li><a href="../about-us.jsp" class="nav-link px-2 link-body-emphasis">About-us</a></li>
-                        <li><a href="../support.jsp" class="nav-link px-2 link-body-emphasis">Help</a></li>
+                        <li><a href="../about.jsp" class="nav-link px-2 link-body-emphasis">About-us</a></li>
+                        <li><a href="../help.jsp" class="nav-link px-2 link-body-emphasis">Help</a></li>
                     </ul>
 
 

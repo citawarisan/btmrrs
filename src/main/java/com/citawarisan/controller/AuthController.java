@@ -17,7 +17,7 @@ import java.io.IOException;
 public class AuthController extends HttpServlet {
     @Override
     public void init() {
-        DBConnection.setConnection("root", "");
+     //   DBConnection.setConnection("root", "");
     }
 
     @Override
