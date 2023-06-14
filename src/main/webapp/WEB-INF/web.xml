@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <servlet>
         <servlet-name>Backdoor</servlet-name>
-        <servlet-class>com.citawarisan.controller.AuthController</servlet-class>
+        <servlet-class>com.citawarisan.controller.UserController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Backdoor</servlet-name>

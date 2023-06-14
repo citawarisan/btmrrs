@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet(urlPatterns = {"/login", "/signup", "/logout", "/update"})
-public class AuthController extends HttpServlet {
+public class UserController extends HttpServlet {
     @Override
     public void init() {
         DBConnection.setConnection("root", "");
