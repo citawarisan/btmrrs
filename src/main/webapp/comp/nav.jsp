@@ -10,9 +10,11 @@
             background-color: appworkspace;
             height: fit-content;
         }
-        .nav-link  {
+
+        .nav-link {
             font-size: 1.2rem;
         }
+
         .dropdown-item {
             font-size: 1.2rem;
         }
@@ -22,7 +24,8 @@
         <header class="p-3  border-bottom">
             <div class="container">
                 <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                    <a href="dashboard.jsp" class="d-flex align-items-center mb-2 mb-lg-0 link-body-emphasis text-decoration-none">
+                    <a href="dashboard.jsp"
+                       class="d-flex align-items-center mb-2 mb-lg-0 link-body-emphasis text-decoration-none">
                         <img class="bi me-2" width="120" height="80" role="img" aria-label="Bootstrap"
                              src="https://upload.wikimedia.org/wikipedia/commons/3/3e/Logo_Rasmi_UMT.png">
                     </a>
@@ -38,10 +41,12 @@
                     <div class="dropdown text-end">
                         <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <%=((User)session.getAttribute("user")).getUsername()%>
+                            <%=((User) session.getAttribute("user")).getUsername()%>
                         </a>
                         <ul class="dropdown-menu text-small">
-                            <li><a class="dropdown-item" href="/update?username=<%=((User) request.getSession().getAttribute("user")).getUsername()%>">Edit Profile</a></li>
+                            <li><a class="dropdown-item"
+                                   href="/update?username=<%=((User) request.getSession().getAttribute("user")).getUsername()%>">Edit
+                                Profile</a></li>
 
                             <li>
                                 <hr class="dropdown-divider">
@@ -73,5 +78,5 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
-    crossorigin="anonymous"></script>
+            crossorigin="anonymous"></script>
 </div>

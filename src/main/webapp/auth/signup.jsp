@@ -106,7 +106,7 @@
 
         <p>Already have an account? <a href="/login">Login</a></p>
     </form>
-<%--    <button onclick="show()">Show Alert</button> why this thing exist is beyond me--%>
+    <%--    <button onclick="show()">Show Alert</button> why this thing exist is beyond me--%>
 </div>
 
 <input type="hidden" id="errorMessage" value="<%=request.getSession().getAttribute("errorMessage")%>">

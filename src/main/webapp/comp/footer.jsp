@@ -4,7 +4,7 @@
     Author     : Omar Alomory(S63955)
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
 <style>
     /* footer goes here -------------------------------------------------------------*/
     .footer {
@@ -25,6 +25,7 @@
         padding: 2rem;
         background: var(--footer-background);
     }
+
     .footer .content2 a, .footer .content2 p {
         color: #042141;
         text-decoration: none;
@@ -39,21 +40,26 @@
         font-size: 0.75rem;
         color: black;
     }
+
     .footer .content2 p {
         margin: 0;
         font-size: 0.75rem;
     }
+
     .footer .content2 > div {
         display: flex;
         flex-direction: column;
         justify-content: center;
     }
+
     .footer .content2 > div > div {
         margin: 0.25rem 0;
     }
+
     .footer .content2 > div > div > * {
         margin-right: 0.5rem;
     }
+
     .footer .content2 > div .image {
         align-self: center;
         width: 4rem;
@@ -62,6 +68,7 @@
         background-size: cover;
         background-position: center;
     }
+
     @keyframes bubble-size {
         0%, 75% {
             width: var(--size, 4rem);
@@ -72,6 +79,7 @@
             height: 0rem;
         }
     }
+
     @keyframes bubble-move {
         0% {
             bottom: -4rem;
@@ -80,16 +88,17 @@
             bottom: var(--distance, 10rem);
         }
     }
+
     /*footer ends here =========================================================*/
 </style>
-<div class="footer">           
+<div class="footer">
     <div class="content2">
         <div>
             <div class="creators">
                 <b>CREATORS: </b>
                 <a href="https://www.instagram.com/komar112011/" target="_blank">OMAR</a>
                 <a href="https://www.instagram.com/wzmktn/" target="_blank">AZIM</a>
-                <a href="https://www.instagram.com/garylimkz/" target="_blank">GARY</a> 
+                <a href="https://www.instagram.com/garylimkz/" target="_blank">GARY</a>
             </div>
             <div>
                 <a href="https://ftkki.umt.edu.my" target="_blank"><b>UNIVERSITY MALAYSIA TERENGGANU: UMT</b></a>
@@ -113,7 +122,7 @@
     </div>
 </div>
 <svg style="position: fixed; top: 100vh">
-<defs>
-</defs>
+    <defs>
+    </defs>
 </svg>
 
