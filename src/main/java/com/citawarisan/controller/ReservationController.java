@@ -68,7 +68,7 @@ public class ReservationController extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         System.out.println("POST " + req.getRequestURI()); // debug
 
         // url path decide where to go next
