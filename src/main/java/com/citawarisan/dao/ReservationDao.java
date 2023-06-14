@@ -71,11 +71,11 @@ public class ReservationDao {
     }
 
     // select by username
-    public List<Reservation> read(User user) {
+    public List<Reservation> read(String username) {
         try (Connection conn = DBConnection.getConnection()) {
             String query = "SELECT * FROM Reservation WHERE user = ?";
             PreparedStatement ps = conn.prepareStatement(query);
-            ps.setString(1, user.getUsername());
+            ps.setString(1, username);
 
             ResultSet rs = ps.executeQuery();
 
@@ -184,7 +184,7 @@ public class ReservationDao {
         return c;
     }
 
-    public List<Faculty> retrieveUserFaculties(String u) {
+    public List<Faculty> getUserFaculties(String u) {
         List<Faculty> faculties = new ArrayList<>();
         String query = "SELECT f.faculty_id, f.faculty_name FROM faculty f JOIN room r ON f.faculty_id = r.faculty JOIN reservation rs ON r.room_id = rs.room JOIN user u on rs.user = u.user WHERE u.user = ?";
         try (Connection conn = DBConnection.getConnection()) {
@@ -205,7 +205,7 @@ public class ReservationDao {
         return faculties;
     }
 
-    public List<Room> retrieveUserRooms(String username) {
+    public List<Room> getUserRooms(String username) {
         List<Room> rooms = new ArrayList<>();
 
         try (Connection conn = DBConnection.getConnection()) {
@@ -227,34 +227,6 @@ public class ReservationDao {
         }
 
         return rooms;
-    }
-
-
-    public List<Reservation> retrieveUserReservations(String u) {
-        List<Reservation> reservations = new ArrayList<>();
-        String query = "SELECT  rs.id, rs.user,rs.room, rs.seats, rs.start_datetime, rs.end_datetime, rs.details, rs.status FROM  reservation rs  JOIN user u on rs.user = u.user WHERE u.user = ?";
-        try (Connection conn = DBConnection.getConnection()) {
-            PreparedStatement ps = conn.prepareStatement(query);
-            ps.setString(1, u);
-
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Reservation reservation = new Reservation();
-                reservation.setId(rs.getInt("id"));
-                reservation.setUser(rs.getString("user"));
-                reservation.setRoom(rs.getString("room"));
-                reservation.setSeats(rs.getInt("seats"));
-                reservation.setStartDateTime(rs.getTimestamp("start_datetime").toLocalDateTime());
-                reservation.setEndDateTime(rs.getTimestamp("end_datetime").toLocalDateTime());
-                reservation.setDetails(rs.getString("details"));
-                reservation.setStatus(rs.getString("status"));
-                // Set other reservation properties as needed
-                reservations.add(reservation);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return reservations;
     }
 
     public void deleteReservation(int id) {

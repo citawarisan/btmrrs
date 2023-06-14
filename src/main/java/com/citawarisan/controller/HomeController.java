@@ -69,9 +69,9 @@ public class HomeController extends HttpServlet {
 
         ReservationDao dao = new ReservationDao();
         List<Course> c = dao.getUserCourses(username);
-        List<Faculty> f = dao.retrieveUserFaculties(username);
-        List<Room> r = dao.retrieveUserRooms(username);
-        List<Reservation> rs = dao.retrieveUserReservations(username);
+        List<Faculty> f = dao.getUserFaculties(username);
+        List<Room> r = dao.getUserRooms(username);
+        List<Reservation> rs = dao.read(username);
 
         req.setAttribute("f", f);
         req.setAttribute("r", r);
