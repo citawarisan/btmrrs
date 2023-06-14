@@ -17,6 +17,7 @@ import java.util.List;
 public class HomeController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession sess = req.getSession();
         System.out.println("GET " + req.getRequestURI()); // debug
 
         // url path decide where to go next
@@ -24,6 +25,11 @@ public class HomeController extends HttpServlet {
         switch (req.getRequestURI()) {
             case "/book": // TODO
             case "/home":
+                if (sess.getAttribute("user") == null) {
+                    resp.sendRedirect("/login");
+                    System.out.println("Unauthorized access to /home"); // debug
+                    return;
+                }
                 regenerate(req);
             default:
                 destination = "/dashboard.jsp";
@@ -68,7 +74,6 @@ public class HomeController extends HttpServlet {
         String username = ((User) sess.getAttribute("user")).getUsername();
 
         ReservationDao dao = new ReservationDao();
-        List<Course> c = dao.getUserCourses(username);
         List<Faculty> f = dao.getUserFaculties(username);
         List<Room> r = dao.getUserRooms(username);
         List<Reservation> rs = dao.read(username);
@@ -76,6 +81,5 @@ public class HomeController extends HttpServlet {
         req.setAttribute("f", f);
         req.setAttribute("r", r);
         req.setAttribute("rs", rs);
-        req.setAttribute("courses", c);
     }
 }
