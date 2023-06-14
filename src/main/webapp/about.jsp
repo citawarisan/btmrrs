@@ -1,9 +1,3 @@
-<%-- 
-    Document   : about-us
-    Created on : Jun 12, 2023, 3:39:23 AM
-    Author     : Omar Alomory(S63955)
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -191,7 +185,7 @@
                 <img
                         src="images/Gary.jpg" alt="Gary" style="width: 100%"/>
                 <h1>GARY LIM</h1>
-                <p class="title">Non-Working Staff</p>
+                <p class="title">The Janitor</p>
                 <p>UMT</p>
                 <div style="margin: 24px 0">
                     <a href="#"><i class="fa fa-dribbble"></i></a>

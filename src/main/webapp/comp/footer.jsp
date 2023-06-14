@@ -108,7 +108,7 @@
             </div>
             <div>
                 <a href="support.jsp"><b>SUPPORT</b></a>
-                <a href="about-us.jsp"><b>ABOUT-US</b></a>
+                <a href="about.jsp"><b>ABOUT-US</b></a>
                 <a href="#faq.jsp"><b>FAQ</b></a>
             </div>
         </div>
