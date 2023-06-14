@@ -2,6 +2,7 @@ package com.citawarisan.dao;
 
 import com.citawarisan.model.*;
 import com.citawarisan.util.DBConnection;
+import com.citawarisan.view.ReservationView;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -85,6 +86,36 @@ public class ReservationDao {
         }
 
         return null;
+    }
+
+    public ReservationView readV(String username) {
+        ReservationView rv = null;
+        ReservationView.flush();
+
+        String query = "SELECT * FROM Reservation_View WHERE user = ?";
+        try (Connection conn = DBConnection.getConnection()) {
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, username);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                rv = new ReservationView();
+                rv.setId(rs.getInt("id"));
+                rv.setUser(rs.getString("user"));
+                rv.setDate(rs.getTimestamp("date").toLocalDateTime());
+                rv.setTime(rs.getString("time"));
+                rv.setRoom(rs.getString("room"));
+                rv.setStatus(rs.getString("status"));
+                rv.setDetails(rs.getString("details"));
+                rv.add();
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return rv;
     }
 
     public boolean update(Reservation reservation) {
