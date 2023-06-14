@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,5 +72,12 @@ public class ModelChronos {
             e.printStackTrace();
         }
         return courses;
+    }
+
+    // get datetime now plus i days, j hours
+    public String getFuture(int hours) {
+        String n = LocalDateTime.now().withMinute(0).withSecond(0).withNano(0).plusDays(1).plusHours(hours).toString();
+        System.out.println(n);
+        return n;
     }
 }
