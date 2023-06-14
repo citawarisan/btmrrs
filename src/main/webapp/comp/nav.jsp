@@ -31,6 +31,10 @@
                     <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                         <li><a href="/home" class="nav-link px-2 link-body-emphasis">Dashboard</a></li>
                         <li><a href="/book" class="nav-link px-2 link-body-emphasis">Reserve</a></li>
+                        <c:if test="${user.type == 1}">
+                            <li><a href="/Admin/courses.jsp" class="nav-link px-2 link-body-emphasis">Courses</a></li>
+                            <li><a href="/Admin/users.jsp" class="nav-link px-2 link-body-emphasis">Users</a></li>
+                        </c:if>
                         <li><a href="/etc/about.jsp" class="nav-link px-2 link-body-emphasis">About-us</a></li>
                         <li><a href="/etc/support.jsp" class="nav-link px-2 link-body-emphasis">Help</a></li>
                     </ul>
@@ -44,7 +48,7 @@
                         <ul class="dropdown-menu text-small">
                             <li><a class="dropdown-item"
                                    href="/update?username=<%=((User) request.getSession().getAttribute("user")).getUsername()%>">Edit
-                                Profile</a></li>
+                                    Profile</a></li>
 
                             <li>
                                 <hr class="dropdown-divider">
@@ -74,5 +78,5 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
-            crossorigin="anonymous"></script>
+    crossorigin="anonymous"></script>
 </div>
