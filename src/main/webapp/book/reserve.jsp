@@ -11,90 +11,45 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Reserve</title>
+        <link rel="stylesheet" href="../css/reserve.css"/>
     </head>
-    <style>
-        *{
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-        }
-        .reverseBody{
-            background-image: url("https://wallpaperaccess.com/full/4685960.jpg");
-            width: 100%;
-            height: 100vh;
-        }
-        .row{
-            display: flex;
-            width: 90%;
-            height: 80vh;
 
-            flex-direction: row-reverse;
-            flex-wrap: wrap;
-            align-content: space-around;
-            align-items: flex-end;
-            justify-content: center;
-
-        }
-        .reserveLeft{
-            width: 30%;
-        }
-        .reserveRight{
-            width: 70%
-        }
-
-        th, td {
-            text-align: center;
-            vertical-align: middle;
-        }
-
-        :root{
-            --today: rgba(30, 136, 229, 0.5);
-        }
-
-        .today {
-            background-color: var(--today);
-        }
-
-        .past {
-            background-color: rgba(0, 0, 0, 0.25);
-        }
-
-        .clickable {
-            cursor: pointer;
-        }
-
-        .clickable:hover {
-            background-color: rgba(124, 179, 66, 0.5);
-        }
-    </style>
-</head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <body>
-
-    <%@include file="../comp/nav.jsp" %>
-    <div class="reserveBody row">
-        <div class="reserveContent">
-            <div class="contentLeft contentAll">
-               
+<%@include file="../comp/nav.jsp" %>
+    
+    <div class="reserveBody">
+        <div class="reserveContent row">
+            <div class="contentLeft contentAll ">
                 <div class="form">
                     <form>
-                        <div class="row">
+                        <div >
                             <div class="col">
                                 <label for="course">Course</label>
                                 <select name="course">
-                                    <option value=""></option>
+                                    <c:forEach items="${c}" var="courses">
+                                        <option value="${courses.courseCode}"> ${courses.courseCode}</option>
+                                    </c:forEach>
                                 </select>
                             </div>
                             <div class="col">
-                                <label for="venue">Veneu:</label>
-                                <input type="text" name="venue" required/>
+                                <label for="venue">Room:</label>
+
+                                <select id="venues" required>
+                                    <option selected>Select Room</option>
+                                    <c:forEach items="${r}" var="room">
+                                        <option value="${room.roomId}">${room.roomName}</option>
+                                    </c:forEach>
+                                </select>
                             </div>
                             <div class="col">
                                 <label for="seats">Seats:</label>
-                                <input type="text" name="seats" required/>
+                                <input type="number" name="seats" required/>
                             </div>
+                          
                             <div class="col">
-                                <label for="venue">Veneu:</label>
-                                <input type="text" name="venue" required/>
+                                <label for="startTime">Start Time:</label><input type="time" name="startTime" required>
+                                <label for="endTime">End Time:</label><input type="time" name="endTime" required>
                             </div>
                         </div>
                     </form>
@@ -127,99 +82,107 @@
     </div>
     <%@include file="../comp/footer.jsp" %>
 
-   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      let date = new Date();
-      let tempDate = date;
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let date = new Date();
+            let tempDate = date;
 
-      let calendar = document.querySelector('.calendar');
-      let monthHeader = calendar.querySelector('#month');
-      let calendarBody = calendar.querySelector('tbody');
+            let calendar = document.querySelector('.calendar');
+            let monthHeader = calendar.querySelector('#month');
+            let calendarBody = calendar.querySelector('tbody');
 
-      function renderCalendar(month) {
-        date = new Date();
-        tempDate.setMonth(tempDate.getMonth() + (month || 0));
-        let y = tempDate.getFullYear(),
-          m = tempDate.getMonth();
-        let firstDay = new Date(y, m, 1).getDay(),
-          lastDay = new Date(y, m + 1, 0).getDate();
+            function renderCalendar(month) {
+                date = new Date();
+                tempDate.setMonth(tempDate.getMonth() + (month || 0));
+                let y = tempDate.getFullYear(),
+                        m = tempDate.getMonth();
+                let firstDay = new Date(y, m, 1).getDay(),
+                        lastDay = new Date(y, m + 1, 0).getDate();
 
-        // Set the month and year in the header
-        monthHeader.innerText = tempDate.toLocaleString('default', {
-          month: 'long',
-          year: 'numeric'
+                // Set the month and year in the header
+                monthHeader.innerText = tempDate.toLocaleString('default', {
+                    month: 'long',
+                    year: 'numeric'
+                });
+
+                // Loop through the weeks of the month
+                calendarBody.innerHTML = '';
+
+                let day = 1;
+                while (day <= lastDay) {
+                    let tr = document.createElement('tr');
+
+                    // Loop through the days of the week
+                    for (let i = 0; i < 7; i++) {
+                        let td = document.createElement('td');
+                        if (firstDay > 0) {
+                            firstDay--;
+                        } else if (day <= lastDay) {
+                            td.innerText = day.toString();
+
+                            let renderDate = new Date(y, m, day);
+
+                            if (renderDate.toDateString() === date.toDateString())
+                                td.classList.add('today');
+                            else if (renderDate > date)
+                                td.classList.add('clickable');
+                            else {
+                                td.classList.add('past');
+                            }
+
+                            day++;
+                        }
+
+                        tr.appendChild(td);
+                    }
+
+                    calendarBody.appendChild(tr);
+                }
+            }
+
+            renderCalendar();
+
+            let previousButton = calendar.querySelector('#left');
+            let nextButton = calendar.querySelector('#right');
+
+            monthHeader.addEventListener('click', function () {
+                tempDate = date;
+                renderCalendar();
+            });
+
+            // Event handler for the previous button
+            previousButton.addEventListener('click', function () {
+                renderCalendar(-1);
+            });
+
+            // Event handler for the next button
+            nextButton.addEventListener('click', function () {
+                renderCalendar(1);
+            });
+
+            // Handle link click event
+            document.addEventListener('click', function (event) {
+                if (event.target.classList.contains('clickable')) {
+                    let day = event.target.innerText; // Get the day value from the clicked cell
+                    showTimeInterval(day); // Call the showTimeInterval method with the day
+                }
+            });
+
+            // Method to show the time interval
+            function showTimeInterval(day) {
+                // Do whatever you want with the day parameter
+                console.log('Clicked day:', day);
+                // Your code here...
+            }
+            $(document).ready(function () {
+                $("#myInput").on("keyup", function () {
+                    var value = $(this).val().toLowerCase();
+                    $("#venues option").filter(function () {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    });
+                });
+            });
         });
-
-        // Loop through the weeks of the month
-        calendarBody.innerHTML = '';
-
-        let day = 1;
-        while (day <= lastDay) {
-          let tr = document.createElement('tr');
-
-          // Loop through the days of the week
-          for (let i = 0; i < 7; i++) {
-            let td = document.createElement('td');
-            if (firstDay > 0) {
-              firstDay--;
-            } else if (day <= lastDay) {
-              td.innerText = day.toString();
-
-              let renderDate = new Date(y, m, day);
-
-              if (renderDate.toDateString() === date.toDateString())
-                td.classList.add('today');
-              else if (renderDate > date)
-                td.classList.add('clickable');
-            else{
-                td.classList.add('past');
-            }
-
-              day++;
-            }
-
-            tr.appendChild(td);
-          }
-
-          calendarBody.appendChild(tr);
-        }
-      }
-
-      renderCalendar();
-
-      let previousButton = calendar.querySelector('#left');
-      let nextButton = calendar.querySelector('#right');
-
-      monthHeader.addEventListener('click', function() {
-        tempDate = date;
-        renderCalendar();
-      });
-
-      // Event handler for the previous button
-      previousButton.addEventListener('click', function() {
-        renderCalendar(-1);
-      });
-
-      // Event handler for the next button
-      nextButton.addEventListener('click', function() {
-        renderCalendar(1);
-      });
-
-      // Handle link click event
-      document.addEventListener('click', function(event) {
-        if (event.target.classList.contains('clickable')) {
-          let day = event.target.innerText; // Get the day value from the clicked cell
-          showTimeInterval(day); // Call the showTimeInterval method with the day
-        }
-      });
-
-      // Method to show the time interval
-      function showTimeInterval(day) {
-        // Do whatever you want with the day parameter
-        console.log('Clicked day:', day);
-        // Your code here...
-      }
-    });
-  </script>
+    </script>
 </body>
 </html>

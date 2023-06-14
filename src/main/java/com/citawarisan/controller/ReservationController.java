@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @WebServlet(urlPatterns = {"/home", "/book", "/revise", "/cancel"})
 public class ReservationController extends HttpServlet {
@@ -33,6 +34,7 @@ public class ReservationController extends HttpServlet {
         String destination;
         switch (req.getRequestURI()) {
             case "/book":
+               generateReservationPage(req);
                 destination = "/book/reserve.jsp";
                 break;
             case "/revise":
@@ -114,5 +116,17 @@ public class ReservationController extends HttpServlet {
         HttpSession sess = req.getSession();
         String username = ((User) sess.getAttribute("user")).getUsername();
         sess.setAttribute("rv", new ReservationDao().readV(username));
+    }
+
+  private void generateReservationPage(HttpServletRequest req) throws ServletException, IOException {
+        HttpSession session = req.getSession();
+        String username = ((User) session.getAttribute("user")).getUsername();
+        List<Course> c =  new ReservationDao().getUserCourses(username);
+        List<Reservation> rs =  new ReservationDao().read(username);
+        List<Room>  r =  new ReservationDao().readRooms();
+        req.setAttribute("c", c);
+        req.setAttribute("rs", rs);
+        req.setAttribute("r", r);
+
     }
 }

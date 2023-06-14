@@ -30,9 +30,9 @@
 
                     <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                         <li><a href="/home" class="nav-link px-2 link-body-emphasis">Dashboard</a></li>
-                        <li><a href="/book/reserve.jsp" class="nav-link px-2 link-body-emphasis">Reserve</a></li>
+                        <li><a href="/book" class="nav-link px-2 link-body-emphasis">Reserve</a></li>
                         <li><a href="/etc/about.jsp" class="nav-link px-2 link-body-emphasis">About-us</a></li>
-                        <li><a href="/help.jsp" class="nav-link px-2 link-body-emphasis">Help</a></li>
+                        <li><a href="/etc/support.jsp" class="nav-link px-2 link-body-emphasis">Help</a></li>
                     </ul>
 
 
@@ -62,12 +62,10 @@
         // this script will change the nave label to the current page diplayed
         $(document).ready(function () {
             var currentFile = window.location.href.split('/').pop();
-            console.log("Link 1; " + currentFile);
             $(".nav-link").each(function () {
                 var linkHref = $(this).attr('href').split('/').pop();
 
                 if (linkHref === currentFile) {
-                    console.log("Link 2; " + linkHref);
                     $(this).addClass("link-primary");
                     $(this).removeClass("link-body-emphasis");
                 }

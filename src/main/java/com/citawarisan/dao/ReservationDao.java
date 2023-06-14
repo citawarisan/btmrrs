@@ -299,5 +299,27 @@ public class ReservationDao {
             Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-}
 
+    public List<Room> readRooms() {
+        List<Room> r = new ArrayList();
+
+        try (Connection conn = DBConnection.getConnection()) {
+            String query = "SELECT * FROM Room ";
+            PreparedStatement ps = conn.prepareStatement(query);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Room temp = new Room();
+                temp.setRoomId(rs.getString(1));
+                temp.setRoomName(rs.getString(2));
+                temp.setRoomSize(rs.getInt(3));
+                temp.setFaculty(rs.getInt(4));
+                r.add(temp);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return r;
+    }
+}
