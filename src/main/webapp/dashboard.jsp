@@ -1,9 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" import="com.citawarisan.model.*, java.util.List" %>
-
-<% // no trespassing
-    if (session.getAttribute("user") == null)
-        response.sendRedirect("/login");
-%>
+<jsp:useBean id="user" class="com.citawarisan.model.User" scope="session"/>
+<c:if test="${user == null}">
+    yes
+</c:if>
 
 <!DOCTYPE html>
 <html>
@@ -74,35 +73,16 @@
 
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 </head>
 
 <body>
 
-<%-- this will include the header with the css  --%>
 <%@include file="comp/nav.jsp" %>
 
 <div class="containerBody">
-
-    <%--retriveing user object to the dashboard--%>
     <input type="hidden" id="type" name="userType" value="${user.type}"/>
 
     <div class="main-header staff">
-        <div class="main-side-left">
-            <p>Subject</p>
-            <hr>
-            <div class="subjects">
-                <% List<Course> courses = (List<Course>) request.getAttribute("courses"); %>
-
-                <% for (Course course : courses) {%>
-                <div class="subcode">
-                    <p><%=course.getCourseCode()%>
-                    </p>
-                </div>
-                <% }%>
-            </div>
-
-        </div>
         <div class="main-side-right">
             <p>Reserved Rooms</p>
             <hr>
@@ -132,22 +112,9 @@
 
         </div>
     </div>
-    <div class="adminSide">
-        this is the admin side
-    </div>
 </div>
+
 <%@include file="comp/footer.jsp" %>
+
 </body>
-<script>
-    $(document).ready(function () {
-        var type = $('#type').val();
-        if (type == "3") {
-            $('.staff').hide();
-            $('.adminSide').show();
-        } else {
-            $('.staff').show();
-            $('.adminSide').hide();
-        }
-    });
-</script>
 </html>
