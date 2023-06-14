@@ -68,7 +68,7 @@ public class ReservationController extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("POST " + req.getRequestURI()); // debug
 
         // url path decide where to go next
@@ -84,6 +84,10 @@ public class ReservationController extends HttpServlet {
                     destination = "/book";
                 }
         }
+
+        // forward user to confirmation page to confirm their action and redirect
+//        req.getRequestDispatcher("/book/confirm.jsp").forward(req, resp);
+//        no time implement
 
         System.out.println("Redirecting to " + destination); // debug
         resp.sendRedirect(destination);
