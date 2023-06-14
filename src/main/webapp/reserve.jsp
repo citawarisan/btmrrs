@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core"  prefix="c"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -22,7 +23,7 @@
             width: 100%;
             height: 100vh;
         }
-        .reserveContent{
+        .row{
             display: flex;
             width: 90%;
             height: 80vh;
@@ -70,10 +71,34 @@
 <body>
 
     <%@include file="comp/nav.jsp" %>
-    <div class="reserveBody">
+    <div class="reserveBody row">
         <div class="reserveContent">
             <div class="contentLeft contentAll">
-
+               
+                <div class="form">
+                    <form>
+                        <div class="row">
+                            <div class="col">
+                                <label for="course">Course</label>
+                                <select name="course">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <label for="venue">Veneu:</label>
+                                <input type="text" name="venue" required/>
+                            </div>
+                            <div class="col">
+                                <label for="seats">Seats:</label>
+                                <input type="text" name="seats" required/>
+                            </div>
+                            <div class="col">
+                                <label for="venue">Veneu:</label>
+                                <input type="text" name="venue" required/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
             <div class="contentRight contentAll">
                 <table class="calendar">
