@@ -105,7 +105,7 @@
         </div>
         <div>
             <a class="image"
-               href="dashboard.jsp"
+               href="/home"
                style="
                background-image: url('https://upload.wikimedia.org/wikipedia/commons/3/3e/Logo_Rasmi_UMT.png' )"></a>
             <p>©2023 UMT Citawarisan</p>

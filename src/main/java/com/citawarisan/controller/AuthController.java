@@ -202,42 +202,4 @@ public class AuthController extends HttpServlet {
         sess.removeAttribute("user");
         System.out.println("Session user: " + sess.getAttribute("user"));
     }
-
-    private void displayList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<CourseInformation> ci = new UserDao().displaySchedule();
-
-        RequestDispatcher rd = req.getRequestDispatcher("studentDisplay.jsp");
-        req.setAttribute("errorMessage", "false");
-        req.setAttribute("studentInfo", ci);
-
-        rd.forward(req, resp);
-    }
-
-    private void deleteReserve(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("rsid"));
-
-        UserDao userDAO = new UserDao();
-
-        userDAO.deleteReservation(id);
-        RequestDispatcher rd = request.getRequestDispatcher("UserController");
-        request.setAttribute("action", "regenerate");
-        rd.forward(request, response);
-    }
-
-    private void regenerate(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        UserDao userDAO = new UserDao();
-        HttpSession session = req.getSession();
-        String user = (String) session.getAttribute("user");
-        RequestDispatcher rd = req.getRequestDispatcher("dashboard.jsp");
-        List<Course> c = userDAO.retrieveUserSubjects(user);
-        List<Faculty> f = userDAO.retrieveUserFaculties(user);
-        List<Room> r = userDAO.retrieveUserRooms(user);
-        List<Reservation> rs = userDAO.retrieveUserReservations(user);
-
-        req.setAttribute("f", f);
-        req.setAttribute("r", r);
-        req.setAttribute("rs", rs);
-        req.setAttribute("courses", c);
-        rd.forward(req, res);
-    }
 }
