@@ -85,7 +85,7 @@
             <c:forEach var="r" items="${rv.getList()}">
                 <div class="roomdesc">
                     <p class="facultyroom"><b>${r.room}</b></p>
-                    <p class="date">Date: ${r.date}</p>
+                    <p class="date">Date: ${r.getDate()}</p>
                     <p class="time">Time: ${r.time}</p>
                     <p class="status">Status: ${r.status}</p>
 

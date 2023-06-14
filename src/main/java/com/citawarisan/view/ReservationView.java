@@ -1,10 +1,11 @@
 package com.citawarisan.view;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class ReservationView {
-    private List<ReservationView> rvs;
+    private static List<ReservationView> rvs;
     private int id;
     private String user;
     private LocalDateTime date;
@@ -26,8 +27,8 @@ public class ReservationView {
         this.user = user;
     }
 
-    public LocalDateTime getDate() {
-        return date;
+    public LocalDate getDate() {
+        return date.toLocalDate();
     }
 
     public void setDate(LocalDateTime date) {
@@ -67,7 +68,7 @@ public class ReservationView {
     }
 
     public void setList(List<ReservationView> rvs) {
-        this.rvs = rvs;
+        ReservationView.rvs = rvs;
     }
 
     public List<ReservationView> getList() {
