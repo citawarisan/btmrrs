@@ -34,7 +34,7 @@
                         <li><a href="/home" class="nav-link px-2 link-body-emphasis">Dashboard</a></li>
                         <li><a href="/reserve.jsp" class="nav-link px-2 link-body-emphasis">Reserve</a></li>
                         <li><a href="/about.jsp" class="nav-link px-2 link-body-emphasis">About-us</a></li>
-                        <li><a href="/support.jsp" class="nav-link px-2 link-body-emphasis">Help</a></li>
+                        <li><a href="/help.jsp" class="nav-link px-2 link-body-emphasis">Help</a></li>
                     </ul>
 
 

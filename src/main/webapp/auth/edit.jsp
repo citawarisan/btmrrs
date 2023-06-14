@@ -56,6 +56,10 @@
             transform: scale(0.96);
         }
 
+        .form-group label{
+            display: block;
+        }
+
         @media screen and (max-width: 1000px) {
             .container {
                 height: fit-content;
