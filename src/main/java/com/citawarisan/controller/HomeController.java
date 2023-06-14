@@ -1,6 +1,6 @@
 package com.citawarisan.controller;
 
-import com.citawarisan.dao.UserDao;
+import com.citawarisan.dao.ReservationDao;
 import com.citawarisan.model.*;
 
 import javax.servlet.RequestDispatcher;
@@ -45,7 +45,7 @@ public class HomeController extends HttpServlet {
 //    }
 
     private void displayList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<CourseInformation> ci = new UserDao().displaySchedule();
+        List<CourseInformation> ci = new ReservationDao().displaySchedule();
 
         RequestDispatcher rd = req.getRequestDispatcher("studentDisplay.jsp");
         req.setAttribute("errorMessage", "false");
@@ -54,25 +54,24 @@ public class HomeController extends HttpServlet {
         rd.forward(req, resp);
     }
 
-    private void deleteReserve(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void deleteReservation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("rsid"));
 
-        UserDao userDAO = new UserDao();
-
-        userDAO.deleteReservation(id);
+        new ReservationDao().delete(id);
         RequestDispatcher rd = request.getRequestDispatcher("UserController");
         request.setAttribute("action", "regenerate");
         rd.forward(request, response);
     }
 
     private void regenerate(HttpServletRequest req) {
-        UserDao userDAO = new UserDao();
-        HttpSession session = req.getSession();
-        String user = ((User) session.getAttribute("user")).getUsername();
-        List<Course> c = userDAO.retrieveUserSubjects(user);
-        List<Faculty> f = userDAO.retrieveUserFaculties(user);
-        List<Room> r = userDAO.retrieveUserRooms(user);
-        List<Reservation> rs = userDAO.retrieveUserReservations(user);
+        HttpSession sess = req.getSession();
+        String username = ((User) sess.getAttribute("user")).getUsername();
+
+        ReservationDao dao = new ReservationDao();
+        List<Course> c = dao.getUserCourses(username);
+        List<Faculty> f = dao.retrieveUserFaculties(username);
+        List<Room> r = dao.retrieveUserRooms(username);
+        List<Reservation> rs = dao.retrieveUserReservations(username);
 
         req.setAttribute("f", f);
         req.setAttribute("r", r);
