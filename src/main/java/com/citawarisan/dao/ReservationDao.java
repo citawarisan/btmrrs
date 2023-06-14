@@ -188,6 +188,21 @@ public class ReservationDao {
         r.setStatus("Cancelled");
         return update(r);
     }
+    public boolean approve(int id, User u) {
+        Reservation r = read(id);
+        if (r == null) {
+            System.out.println("Reservation not found");
+            return false;
+        }
+
+        if (!allowed(u, r)) {
+            System.out.println("Illegal access");
+            return false;
+        }
+
+        r.setStatus("Success");
+        return update(r);
+    }
 
     public List<CourseInformation> displaySchedule() {
         List<CourseInformation> info = new ArrayList<>();
