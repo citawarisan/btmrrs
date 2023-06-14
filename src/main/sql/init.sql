@@ -74,7 +74,7 @@ CREATE VIEW Reservation_View AS
 SELECT
     r.id,
     r.user,
-    DATE(r.start_datetime) AS date,
+    r.start_datetime AS date,
     CONCAT(DATE_FORMAT(r.start_datetime, '%H%i'), ' - ', DATE_FORMAT(r.end_datetime, '%H%i')) AS time,
     CONCAT(f.faculty_name, ' - ', ro.room_name) AS room,
     r.details,
