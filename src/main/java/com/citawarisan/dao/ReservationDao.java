@@ -169,15 +169,19 @@ public class ReservationDao {
         return false;
     }
 
-    public boolean cancel(int id, User user) {
+    private boolean allowed(User u, Reservation r) {
+        return u.getType() == 1 || r.getUser().equals(u.getUsername());
+    }
+
+    public boolean cancel(int id, User u) {
         Reservation r = read(id);
         if (r == null) {
             System.out.println("Reservation not found");
             return false;
         }
 
-        if (user.getType() != 1 && !r.getUser().equals(user.getUsername())) {
-            System.out.println("Illegal attempt to cancel reservation");
+        if (!allowed(u, r)) {
+            System.out.println("Illegal access");
             return false;
         }
 
