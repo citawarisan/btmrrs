@@ -68,3 +68,17 @@ CREATE TABLE User_Courses
     FOREIGN KEY (course_code) REFERENCES Course (course_code),
     FOREIGN KEY (user) REFERENCES User (user)
 );
+
+-- views
+CREATE VIEW Reservation_View AS
+SELECT
+    r.id,
+    r.user,
+    DATE(r.start_datetime) AS date,
+    CONCAT(DATE_FORMAT(r.start_datetime, '%H%i'), ' - ', DATE_FORMAT(r.end_datetime, '%H%i')) AS time,
+    CONCAT(f.faculty_name, ' - ', ro.room_name) AS room,
+    r.details,
+    r.status
+FROM Reservation r
+    JOIN Room ro ON r.room = ro.room_id
+    JOIN Faculty f ON ro.faculty = f.faculty_id;
