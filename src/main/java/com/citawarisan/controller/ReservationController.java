@@ -4,7 +4,6 @@ import com.citawarisan.dao.ReservationDao;
 import com.citawarisan.model.*;
 import com.citawarisan.util.ModelChronos;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -33,8 +32,10 @@ public class ReservationController extends HttpServlet {
         String destination;
         switch (req.getRequestURI()) {
             case "/book":
-                generateReservationPage(req);
-                destination = "/book/reserve.jsp";
+//                generateReservationPage(req);
+                String username = ((User) sess.getAttribute("user")).getUsername();
+                req.setAttribute("c", new ModelChronos(username));
+                destination = "/book/make.jsp";
                 break;
             case "/revise":
                 Reservation r = new ReservationDao().read(Integer.parseInt(req.getParameter("id")));
@@ -52,6 +53,7 @@ public class ReservationController extends HttpServlet {
                 cancelReservation(req);
             case "/home":
             default:
+                sess.setAttribute("error", null);
                 destination = "/dashboard.jsp";
         }
 
@@ -75,7 +77,7 @@ public class ReservationController extends HttpServlet {
                 break;
             case "/book":
                 if (!createReservation(req)) {
-                    destination = "/book?id=" + req.getParameter("id");
+                    destination = "/book";
                 }
         }
 
@@ -85,67 +87,108 @@ public class ReservationController extends HttpServlet {
 
     private boolean check(HttpSession sess, Reservation r) {
         ReservationDao dao = new ReservationDao();
-        Reservation rec = dao.read(r.getId());
+//        Reservation rec = dao.read(r.getId());
 
-        if (rec == null) {
-            sess.setAttribute("error", "Reservation doesnt exists");
-            return false;
-        }
+//        if (rec == null) {
+//            sess.setAttribute("error", "Reservation doesnt exists");
+//            return false;
+//        }
 
         // check if reservation cancelled
-        if (rec.getStatus().equals("cancelled")) {
+//        System.out.println("Reservation status: " + r.getStatus());
+        String status = r.getStatus();
+        if (status != null && status.equals("cancelled")) {
+            System.out.println("Reservation already cancelled");
             sess.setAttribute("error", "Reservation already cancelled");
             return false;
         }
 
         // if reservation is outdated
-        if (rec.getStartDateTime().isBefore(LocalDateTime.now())) {
+        if (r.getStartDateTime().isBefore(LocalDateTime.now())) {
+            System.out.println("Reservation already outdated");
             sess.setAttribute("error", "Reservation already outdated");
             return false;
         }
 
-        for (Reservation s : dao.read()) {
-            if (r.getRoom().equals(s.getRoom()) && // same room
-                    (r.getStartDateTime() == s.getStartDateTime() || // same start time
-                            (r.getStartDateTime().isAfter(s.getStartDateTime()) && r.getStartDateTime().isBefore(s.getEndDateTime())) || // between duration
-                            (r.getEndDateTime().isAfter(s.getStartDateTime()) && r.getEndDateTime().isBefore(s.getEndDateTime())))) {
-                sess.setAttribute("error", "Reservation time conflict");
-                return false;
+        // start date and end date should be the same (different time)
+        if (!r.getStartDateTime().toLocalDate().equals(r.getEndDateTime().toLocalDate())) {
+            System.out.println("Reservation should be in the same day");
+            sess.setAttribute("error", "Reservation should be in the same day");
+            return false;
+        }
+
+        // start date should be older than end date
+        if (r.getStartDateTime().isAfter(r.getEndDateTime())) {
+            System.out.println("Start date should be older than end date");
+            sess.setAttribute("error", "Start date should be older than end date");
+            return false;
+        }
+
+        // check if any reservation in same room has time conflict
+        List<Reservation> reservations = dao.read();
+        for (Reservation res : reservations) {
+            if (res.getRoom().equals(r.getRoom())) {
+                if (r.getStartDateTime().isBefore(res.getEndDateTime()) && r.getEndDateTime().isAfter(res.getStartDateTime())) {
+                    System.out.println("Time conflict with another reservation");
+                    sess.setAttribute("error", "Time conflict with another reservation");
+                    return false;
+                }
             }
         }
 
         // user not altered
-        if (!rec.getUser().equals(r.getUser())) {
+        if (!r.getUser().equals(r.getUser())) {
+            System.out.println("User altered");
             sess.setAttribute("error", "User altered");
             return false;
         }
 
         // seats smaller than one
         if (r.getSeats() < 1) {
+            System.out.println("Seats must be at least one");
             sess.setAttribute("error", "Seats must be at least one");
             return false;
         }
 
         // seats larger than room
         if (r.getSeats() > new ModelChronos().daoGetRoom(r.getRoom()).getRoomSize()) {
+            System.out.println("Seats larger than room capacity");
             sess.setAttribute("error", "Seats larger than room capacity");
             return false;
         }
 
+        System.out.println("Reservation passed all checks");
         return true;
     }
 
     private boolean createReservation(HttpServletRequest req) {
-//        sess.setAttribute("error", "Failed to create reservation");
-//        System.out.println("Failed to create reservation"); // debug
-        return false;
+        // get reservation data, then create object with it
+        LocalDateTime startDateTime = LocalDateTime.parse(req.getParameter("start_datetime"));
+        LocalDateTime endDateTime = LocalDateTime.parse(req.getParameter("end_datetime"));
+        String room = req.getParameter("room");
+        String user = req.getParameter("user");
+        int seats = Integer.parseInt(req.getParameter("seats"));
+        String details = req.getParameter("course");
+        Reservation r = new Reservation();
+        r.setUser(user);
+        r.setStartDateTime(startDateTime);
+        r.setEndDateTime(endDateTime);
+        r.setRoom(room);
+        r.setSeats(seats);
+        r.setDetails(details);
+        boolean passed = check(req.getSession(), r);
+        System.out.println("Passed: " + passed);
+        if (passed) {
+            new ReservationDao().create(r);
+        }
+        return passed;
     }
 
     private boolean editReservation(HttpServletRequest req) {
         // get reservation data, then create object with it
         int id = Integer.parseInt(req.getParameter("id"));
-        LocalDateTime startDateTime = LocalDateTime.parse(req.getParameter("start_datetime"));
-        LocalDateTime endDateTime = LocalDateTime.parse(req.getParameter("end_datetime"));
+        LocalDateTime startDateTime = LocalDateTime.parse(req.getParameter("start_datetime")).withSecond(0).withNano(0);
+        LocalDateTime endDateTime = LocalDateTime.parse(req.getParameter("end_datetime")).withSecond(0).withNano(0);
         String room = req.getParameter("room");
         String user = req.getParameter("user");
         int seats = Integer.parseInt(req.getParameter("seats"));
