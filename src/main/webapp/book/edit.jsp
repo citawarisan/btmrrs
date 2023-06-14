@@ -24,7 +24,7 @@
             Room:
             <select name="room">
                 <c:forEach items="${c.daoGetRooms()}" var="room">
-                    <option value="${room.roomId}" ${r.room == room.roomId ? 'selected' : ''}>${room.roomName}</option>
+                    <option value="${room.roomId}" ${r.room == room.roomId ? 'selected' : ''}>${room.roomName} (${room.roomSize} seats)</option>
                 </c:forEach>
             </select>
         </label>
@@ -44,7 +44,7 @@
             Course:
             <select name="course">
                 <c:forEach items="${c.daoGetCourses()}" var="course">
-                    <option value="${course.courseCode}" ${r.details == course.courseCode ? 'selected' : ''}>${course.courseName}</option>
+                    <option value="${course.courseCode}" ${r.details == course.courseCode ? 'selected' : ''}>${course.courseCode} - ${course.courseName}</option>
                 </c:forEach>
             </select>
         </label>

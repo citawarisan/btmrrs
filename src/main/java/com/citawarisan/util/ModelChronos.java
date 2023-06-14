@@ -28,6 +28,22 @@ public class ModelChronos {
         this.username = username;
     }
 
+    public Room daoGetRoom(String id) {
+        Room room = null;
+        String query = "SELECT * FROM Room WHERE room_id = ?";
+        try (Connection c = DBConnection.getConnection(); PreparedStatement ps = c.prepareStatement(query)) {
+            ps.setString(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    room = new Room(rs.getString("room_id"), rs.getString("room_name"), rs.getInt("room_size"), rs.getInt("faculty"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return room;
+    }
+
     public List<Room> daoGetRooms() {
         List<Room> rooms = new ArrayList<>();
         String query = "SELECT * FROM Room";

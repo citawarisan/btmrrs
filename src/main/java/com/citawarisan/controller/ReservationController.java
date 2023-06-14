@@ -126,6 +126,12 @@ public class ReservationController extends HttpServlet {
             return false;
         }
 
+        // seats larger than room
+        if (r.getSeats() > new ModelChronos().daoGetRoom(r.getRoom()).getRoomSize()) {
+            sess.setAttribute("error", "Seats larger than room capacity");
+            return false;
+        }
+
         return true;
     }
 
