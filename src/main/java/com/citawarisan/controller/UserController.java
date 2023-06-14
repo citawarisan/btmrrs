@@ -17,7 +17,7 @@ import java.io.IOException;
 public class UserController extends HttpServlet {
     @Override
     public void init() {
-        DBConnection.setConnection("root", "");
+       // DBConnection.setConnection("root", "");
     }
 
     @Override

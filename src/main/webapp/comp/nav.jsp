@@ -64,12 +64,10 @@
         // this script will change the nave label to the current page diplayed
         $(document).ready(function () {
             var currentFile = window.location.href.split('/').pop();
-            console.log("Link 1; " + currentFile);
             $(".nav-link").each(function () {
                 var linkHref = $(this).attr('href').split('/').pop();
 
                 if (linkHref === currentFile) {
-                    console.log("Link 2; " + linkHref);
                     $(this).addClass("link-primary");
                     $(this).removeClass("link-body-emphasis");
                 }

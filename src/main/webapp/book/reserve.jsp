@@ -11,100 +11,42 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Reserve</title>
+        <link rel="stylesheet" href="../css/reserve.css"/>
     </head>
-    <style>
-        *{
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-        }
-        .reverseBody{
-            background-image: url("https://wallpaperaccess.com/full/4685960.jpg");
-            width: 100%;
-            height: 100vh;
-        }
-        .row{
-            display: flex;
-            width: 90%;
-            height: 80vh;
 
-            flex-direction: row-reverse;
-            flex-wrap: wrap;
-            align-content: space-around;
-            align-items: flex-end;
-            justify-content: center;
-
-        }
-        .reserveLeft{
-            width: 30%;
-        }
-        .reserveRight{
-            width: 70%
-        }
-
-        th, td {
-            text-align: center;
-            vertical-align: middle;
-        }
-
-        :root{
-            --today: rgba(30, 136, 229, 0.5);
-        }
-
-        .today {
-            background-color: var(--today);
-        }
-
-        .past {
-            background-color: rgba(0, 0, 0, 0.25);
-        }
-
-        .clickable {
-            cursor: pointer;
-        }
-
-        .clickable:hover {
-            background-color: rgba(124, 179, 66, 0.5);
-        }
-    </style>
-</head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <body>
-
-    <%@include file="../comp/nav.jsp" %>
-    <div class="reserveBody row">
-        <div class="reserveContent">
-            <div class="contentLeft contentAll">
-                <%
-                System.out.println(request.getAttribute("c"));
-                %>
+<%@include file="../comp/nav.jsp" %>
+    
+    <div class="reserveBody">
+        <div class="reserveContent row">
+            <div class="contentLeft contentAll ">
                 <div class="form">
                     <form>
-                        <div class="row">
+                        <div >
                             <div class="col">
                                 <label for="course">Course</label>
                                 <select name="course">
                                     <c:forEach items="${c}" var="courses">
-                                        <option value="${courses.courseCode}">${courses.courseCode}</option>
+                                        <option value="${courses.courseCode}"> ${courses.courseCode}</option>
                                     </c:forEach>
                                 </select>
                             </div>
                             <div class="col">
                                 <label for="venue">Room:</label>
-                                <input type="text" list="venues" name="venue" required/>
-                                <datalist id="venues">
+
+                                <select id="venues" required>
+                                    <option selected>Select Room</option>
                                     <c:forEach items="${r}" var="room">
-                                        <option value="${rooms.roomName}">
-                                        </c:forEach>
-                                </datalist>
+                                        <option value="${room.roomId}">${room.roomName}</option>
+                                    </c:forEach>
+                                </select>
                             </div>
                             <div class="col">
                                 <label for="seats">Seats:</label>
                                 <input type="number" name="seats" required/>
                             </div>
-                            <div class="col">
-                                <label for="venue">Veneu:</label>
-                                <input type="text" name="venue" required/>
-                            </div>
+                          
                             <div class="col">
                                 <label for="startTime">Start Time:</label><input type="time" name="startTime" required>
                                 <label for="endTime">End Time:</label><input type="time" name="endTime" required>
@@ -232,6 +174,14 @@
                 console.log('Clicked day:', day);
                 // Your code here...
             }
+            $(document).ready(function () {
+                $("#myInput").on("keyup", function () {
+                    var value = $(this).val().toLowerCase();
+                    $("#venues option").filter(function () {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    });
+                });
+            });
         });
     </script>
 </body>
