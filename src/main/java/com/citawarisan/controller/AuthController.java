@@ -12,38 +12,37 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
-// it's the opposite, if you have no reason to use web.xml don't use it
 @WebServlet(urlPatterns = {"/login", "/signup", "/logout", "/update"})
-public class UserController extends HttpServlet {
+public class AuthController extends HttpServlet {
     @Override
     public void init() {
         DBConnection.setConnection("root", "");
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("GET " + request.getRequestURI()); // debug
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession sess = req.getSession();
+
+        System.out.println("GET " + req.getRequestURI()); // debug
 
         // url path decide where to go next
         String destination;
-        switch (request.getRequestURI()) {
+        switch (req.getRequestURI()) {
             case "/logout":
-                logout(request);
-                response.sendRedirect("/login");
+                logout(req);
+                resp.sendRedirect("/login");
                 return;
             case "/update":
-                HttpSession sess = request.getSession();
                 User user = (User) sess.getAttribute("user");
-                if (user.getType() != 1 && !user.getUsername().equals(request.getParameter("username"))) {
+                if (user.getType() != 1 && !user.getUsername().equals(req.getParameter("username"))) {
                     System.out.println("Unauthorized access to update user");
-                    response.sendRedirect("/login");
+                    resp.sendRedirect("/login");
                     return;
                 }
-                User editUser = new UserDao().getUser(request.getParameter("username"));
-                request.setAttribute("editUser", editUser);
+                User editUser = new UserDao().getUser(req.getParameter("username"));
+                req.setAttribute("editUser", editUser);
                 destination = "/auth/edit.jsp";
                 break;
             case "/signup":
@@ -53,43 +52,43 @@ public class UserController extends HttpServlet {
             default:
                 destination = "/auth/login.jsp";
                 // but wait, if user session exists
-                if (request.getSession().getAttribute("user") != null) {
-                    response.sendRedirect("/dashboard.jsp");
+                if (sess.getAttribute("user") != null) {
+                    resp.sendRedirect("/home");
                     return;
                 }
         }
 
         System.out.println("Forwarding to " + destination); // debug
-        request.getRequestDispatcher(destination).forward(request, response);
+        req.getRequestDispatcher(destination).forward(req, resp);
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        System.out.println("POST " + request.getRequestURI()); // debug
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        System.out.println("POST " + req.getRequestURI()); // debug
 
         // url path decide where to go next
         boolean success;
         String destination = "/login";
-        switch (request.getRequestURI()) {
+        switch (req.getRequestURI()) {
             case "/login":
-                success = login(request);
+                success = login(req);
                 if (success) {
-                    destination = "/dashboard.jsp";
+                    destination = "/home";
                 }
                 break;
             case "/update":
-                success = updateUser(request);
-                destination = (success) ? "/dashboard.jsp" : "/update";
+                success = updateUser(req);
+                destination = (success) ? "/home" : "/update";
                 break;
             case "/signup":
-                success = signup(request);
+                success = signup(req);
                 if (!success) {
                     destination = "/signup";
                 }
         }
 
         System.out.println("Redirecting to " + destination); // debug
-        response.sendRedirect(destination);
+        resp.sendRedirect(destination);
     }
 
     private void editUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ClassNotFoundException {
@@ -214,8 +213,7 @@ public class UserController extends HttpServlet {
         rd.forward(req, resp);
     }
 
-    private void deleteReserve(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException, ClassNotFoundException {
-
+    private void deleteReserve(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("rsid"));
 
         UserDao userDAO = new UserDao();
@@ -224,10 +222,9 @@ public class UserController extends HttpServlet {
         RequestDispatcher rd = request.getRequestDispatcher("UserController");
         request.setAttribute("action", "regenerate");
         rd.forward(request, response);
-
     }
 
-    private void regenerate(HttpServletRequest req, HttpServletResponse res) throws SQLException, ServletException, IOException, ClassNotFoundException {
+    private void regenerate(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         UserDao userDAO = new UserDao();
         HttpSession session = req.getSession();
         String user = (String) session.getAttribute("user");
@@ -242,6 +239,5 @@ public class UserController extends HttpServlet {
         req.setAttribute("rs", rs);
         req.setAttribute("courses", c);
         rd.forward(req, res);
-
     }
 }
