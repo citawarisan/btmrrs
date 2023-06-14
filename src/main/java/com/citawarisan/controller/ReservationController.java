@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -34,7 +33,7 @@ public class ReservationController extends HttpServlet {
         String destination;
         switch (req.getRequestURI()) {
             case "/book":
-               generateReservationPage(req);
+                generateReservationPage(req);
                 destination = "/book/reserve.jsp";
                 break;
             case "/revise":
@@ -71,17 +70,63 @@ public class ReservationController extends HttpServlet {
         switch (req.getRequestURI()) {
             case "/revise":
                 if (!editReservation(req)) {
-                    destination = "/book";
+                    destination = "/revise?id=" + req.getParameter("id");
                 }
                 break;
             case "/book":
                 if (!createReservation(req)) {
-                    destination = "/book";
+                    destination = "/book?id=" + req.getParameter("id");
                 }
         }
 
         System.out.println("Redirecting to " + destination); // debug
         resp.sendRedirect(destination);
+    }
+
+    private boolean check(HttpSession sess, Reservation r) {
+        ReservationDao dao = new ReservationDao();
+        Reservation rec = dao.read(r.getId());
+
+        if (rec == null) {
+            sess.setAttribute("error", "Reservation doesnt exists");
+            return false;
+        }
+
+        // check if reservation cancelled
+        if (rec.getStatus().equals("cancelled")) {
+            sess.setAttribute("error", "Reservation already cancelled");
+            return false;
+        }
+
+        // if reservation is outdated
+        if (rec.getStartDateTime().isBefore(LocalDateTime.now())) {
+            sess.setAttribute("error", "Reservation already outdated");
+            return false;
+        }
+
+        for (Reservation s : dao.read()) {
+            if (r.getRoom().equals(s.getRoom()) && // same room
+                    (r.getStartDateTime() == s.getStartDateTime() || // same start time
+                            (r.getStartDateTime().isAfter(s.getStartDateTime()) && r.getStartDateTime().isBefore(s.getEndDateTime())) || // between duration
+                            (r.getEndDateTime().isAfter(s.getStartDateTime()) && r.getEndDateTime().isBefore(s.getEndDateTime())))) {
+                sess.setAttribute("error", "Reservation time conflict");
+                return false;
+            }
+        }
+
+        // user not altered
+        if (!rec.getUser().equals(r.getUser())) {
+            sess.setAttribute("error", "User altered");
+            return false;
+        }
+
+        // seats smaller than one
+        if (r.getSeats() < 1) {
+            sess.setAttribute("error", "Seats must be at least one");
+            return false;
+        }
+
+        return true;
     }
 
     private boolean createReservation(HttpServletRequest req) {
@@ -100,8 +145,11 @@ public class ReservationController extends HttpServlet {
         int seats = Integer.parseInt(req.getParameter("seats"));
         String details = req.getParameter("course");
         Reservation r = new Reservation(id, startDateTime, endDateTime, user, room, seats, "success", details);
-        new ReservationDao().update(r);
-        return true;
+        boolean passed = check(req.getSession(), r);
+        if (passed) {
+            new ReservationDao().update(r);
+        }
+        return passed;
     }
 
     private boolean cancelReservation(HttpServletRequest req) {
@@ -118,15 +166,15 @@ public class ReservationController extends HttpServlet {
         sess.setAttribute("rv", new ReservationDao().readV(username));
     }
 
-  private void generateReservationPage(HttpServletRequest req) throws ServletException, IOException {
+    private void generateReservationPage(HttpServletRequest req) throws ServletException, IOException {
         HttpSession session = req.getSession();
         String username = ((User) session.getAttribute("user")).getUsername();
-        List<Course> c =  new ReservationDao().getUserCourses(username);
-        List<Reservation> rs =  new ReservationDao().read(username);
-        List<Room>  r =  new ReservationDao().readRooms();
+        List<Course> c = new ReservationDao().getUserCourses(username);
+        List<Reservation> rs = new ReservationDao().read(username);
+        List<Room> r = new ReservationDao().readRooms();
         req.setAttribute("c", c);
         req.setAttribute("rs", rs);
         req.setAttribute("r", r);
-
+        session.setAttribute("error", null);
     }
 }

@@ -11,12 +11,14 @@
 <body>
 
 <nav class="container-fluid">
-    <a href="/home">Back to Dashboard</a>
+    <h2><a href="/home">Back to Dashboard</a></h2>
 </nav>
 
 <main class="container">
+    ${error}
     <h1>Edit Reservation</h1>
     <form method="POST">
+        <input type="hidden" name="id" value="${r.id}"/>
         <input type="hidden" name="user" value="${r.user}"/>
         <label>
             Room:
