@@ -114,7 +114,7 @@ public class UserDao {
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, user.getEmail());
             String password = user.getPassword();
-            if (password == null)
+            if (password == "")
                 password = getUser(user.getUsername()).getPassword();
             ps.setString(2, password);
             ps.setString(3, user.getPhone());
