@@ -97,7 +97,7 @@
         <div class="form-group">
             <label>
                 Password:
-                <input type="text" class="form-control" name="password" value="${user.password}"/>
+                <input type="password" class="form-control" name="password" placeholder="(Existing Password)"/>
             </label>
         </div>
         <div class="form-group">

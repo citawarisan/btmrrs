@@ -113,7 +113,10 @@ public class UserDao {
 
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, user.getEmail());
-            ps.setString(2, user.getPassword());
+            String password = user.getPassword();
+            if (password == null)
+                password = getUser(user.getUsername()).getPassword();
+            ps.setString(2, password);
             ps.setString(3, user.getPhone());
             ps.setString(4, user.getName());
             ps.setString(5, user.getUsername());
