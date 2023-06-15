@@ -28,27 +28,27 @@
             <label>
                 Username:
                 <p><input type="text" name="username"/></p>
-            </label>
+            </label><br>
             <label>
                 Password:
                 <p><input type="password" name="password"/></p>
-            </label>
+            </label><br>
             <label>
                 Name:
                 <p><input type="text" name="name"/></p>
-            </label>
+            </label><br>
             <label>
                 Phone:
                 <p><input type="text" name="phone"/></p>
-            </label>
+            </label><br>
             <label>
                 Email:
                 <p><input type="text" name="email"/></p>
-            </label>
+            </label><br>
             <label>
                 User Type:
                 <p><input type="number" name="type" minlength="1" maxlength="3" /></p>
-            </label>
+            </label><br>
             <input type="submit" value="Add"/>
         </form>
     </c:when>
@@ -68,34 +68,36 @@
     </c:when>
     <c:when test="${param.action == 'edit'}">
         <%
-            User user = dao.getUser(request.getParameter("id"));
+             User user2 = dao.getUser(request.getParameter("id"));
+             System.out.println(user2.getUsername());
+             request.setAttribute("user2", user2);
         %>
         <form>
             <input type="hidden" name="action" value="update">
             <label>
                 Username:
-                <p><input type="text" name="username" value="${u.username}"/></p>
-            </label>
+                <p><input type="text" name="username" value="${user2.username}"/></p>
+            </label><br>
             <label>
                 Password:
-                <p><input type="password" name="password" value="${u.password}"/></p>
-            </label>
+                <p><input type="password" name="password" value="${user2.password}"/></p>
+            </label><br>
             <label>
                 Name:
-                <p><input type="text" name="name" value="${u.name}"/></p>
-            </label>
+                <p><input type="text" name="name" value="${user2.name}"/></p>
+            </label><br>
             <label>
                 Phone:
-                <p><input type="text" name="phone" value="${u.phone}"/></p>
-            </label>
+                <p><input type="text" name="phone" value="${user2.phone}"/></p>
+            </label><br>
             <label>
                 Email:
-                <p><input type="text" name="email" value="${u.email}"/></p>
-            </label>
+                <p><input type="text" name="email" value="${user2.email}"/></p>
+            </label><br>
             <label>
                 User Type:
-                <p><input type="number" name="type" minlength="1" maxlength="3" value="${u.type}"/></p>
-            </label>
+                <p><input type="number" name="type" minlength="1" maxlength="3" value="${user2.type}"/></p>
+            </label><br>
             <input type="submit" value="Update"/>
         </form>
     </c:when>
@@ -106,14 +108,14 @@
             String name = request.getParameter("name");
             String phone = request.getParameter("phone");
             String email = request.getParameter("email");
-            User user = new User();
-            user.setUsername(username);
-            user.setPassword(password);
-            user.setName(name);
-            user.setPhone(phone);
-            user.setEmail(email);
-            user.setType(Integer.parseInt(request.getParameter("type")));
-            dao.updateUser(user);
+            User user3 = new User();
+            user3.setUsername(username);
+            user3.setPassword(password);
+            user3.setName(name);
+            user3.setPhone(phone);
+            user3.setEmail(email);
+            user3.setType(Integer.parseInt(request.getParameter("type")));
+            dao.updateUser(user3);
             System.out.println("User Updated");
             response.sendRedirect("users.jsp");
         %>
@@ -168,8 +170,8 @@
                                 <c:out value="${v.type}"/>
                             </td>
                             <td>
-                                <a href="?action=edit&id=${v.username}/>">Edit</a> &nbsp;&nbsp;&nbsp;&nbsp;
-                                <a href="?action=delete&id=${v.username}/>">Delete</a>
+                                <a href="?action=edit&id=<c:out value='${v.username}'/>">Edit</a>
+                                <a href="?action=delete&id=<c:out value='${v.username}'/>">Delete</a>
                             </td>
                         </tr>
                     </c:forEach>

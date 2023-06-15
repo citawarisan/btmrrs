@@ -110,7 +110,7 @@
                href="/home"
                style="
                background-image: url('https://upload.wikimedia.org/wikipedia/commons/3/3e/Logo_Rasmi_UMT.png' )"></a>
-            <p>Â©2023 UMT Citawarisan</p>
+            <p>©2023 UMT Citawarisan</p>
         </div>
     </div>
 </div>
